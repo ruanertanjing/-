@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>//文件读写的流类（注意是类）
+#include <stdio.h>
 
 using namespace std;
 
