@@ -243,115 +243,712 @@ int main(){
 */
 
 
-//P4779 【模板】单源最短路径（标准版）
-//https://www.luogu.com.cn/problem/P4779
-
-//涉及dijkstra算法
-//相关讲解链接：https://www.bilibili.com/video/BV1zz4y1m7Nq/?spm_id_from=333.337.search-card.all.click
-
-//需要一个标记是否录入最短路径，记录前一个节点
+////P4779 【模板】单源最短路径（标准版）
+////https://www.luogu.com.cn/problem/P4779
 //
+////涉及dijkstra算法
+////相关讲解链接：https://www.bilibili.com/video/BV1zz4y1m7Nq/?spm_id_from=333.337.search-card.all.click
+//
+////需要一个标记是否录入最短路径，记录前一个节点
+////
+//
+//int pre[100010] = { 0 }, book[100010] = { 0 };//pre:前一个节点，book：是否被标记
+//int n, m, s;
+//
+//void fresh(int u, int v, int w, int i)
+//{
+//
+//}
+//
+//int main()
+//{
+//    scanf("%d%d%d", &n, &m, &s);
+//    int i;
+//    int u, v, w;
+//    for (i = 0; i < m; i++)
+//    {
+//        scanf("%d%d%d", &u, &v, &w);
+//        fresh(u, v, w, i);
+//    }
+//
+//    return 0;
+//}
+//
+//
+///*
+//const int MaxN = 100010, MaxM = 500010;
+//
+//struct edge
+//{
+//    int to, dis, next;
+//};
+//
+//edge e[MaxM];
+//int head[MaxN], dis[MaxN], cnt;
+//bool vis[MaxN];
+//int n, m, s;
+//
+//inline void add_edge( int u, int v, int d )
+//{
+//    cnt++;
+//    e[cnt].dis = d;
+//    e[cnt].to = v;
+//    e[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//struct node
+//{
+//    int dis;
+//    int pos;
+//    bool operator <( const node &x )const
+//    {
+//        return x.dis < dis;
+//    }
+//};
+//
+//std::priority_queue<node> q;
+//
+//
+//inline void dijkstra()
+//{
+//    dis[s] = 0;
+//    q.push( ( node ){0, s} );
+//    while( !q.empty() )
+//    {
+//        node tmp = q.top();
+//        q.pop();
+//        int x = tmp.pos, d = tmp.dis;
+//        if( vis[x] )
+//            continue;
+//        vis[x] = 1;
+//        for( int i = head[x]; i; i = e[i].next )
+//        {
+//            int y = e[i].to;
+//            if( dis[y] > dis[x] + e[i].dis )
+//            {
+//                dis[y] = dis[x] + e[i].dis;
+//                if( !vis[y] )
+//                {
+//                    q.push( ( node ){dis[y], y} );
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//
+//int main()
+//{
+//    scanf( "%d%d%d", &n, &m, &s );
+//    for(int i = 1; i <= n; ++i)dis[i] = 0x7fffffff;
+//    for( register int i = 0; i < m; ++i )
+//    {
+//        register int u, v, d;
+//        scanf( "%d%d%d", &u, &v, &d );
+//        add_edge( u, v, d );
+//    }
+//    dijkstra();
+//    for( int i = 1; i <= n; i++ )
+//        printf( "%d ", dis[i] );
+//    return 0;
+//}
+//
+//*/
 
-int pre[100010] = { 0 }, book[100010] = { 0 };//pre:前一个节点，book：是否被标记
-int n, m, s;
 
-void fresh(int u, int v, int w, int i)
-{
+//P3371 【模板】单源最短路径（弱化版）
+//https://www.luogu.com.cn/problem/P3371
 
-}
-
-int main()
-{
-    scanf("%d%d%d", &n, &m, &s);
-    int i;
-    int u, v, w;
-    for (i = 0; i < m; i++)
-    {
-        scanf("%d%d%d", &u, &v, &w);
-        fresh(u, v, w, i);
-    }
-
-    return 0;
-}
+//题解：https://www.luogu.com.cn/article/oswxjzrl
 
 
+///*法一：邻接矩阵*/
+////占的空间较多，时间复杂度较大，不适合
+//int jz[10010][10010] = { 0 };//邻接矩阵
+//int st[10010] = { 0 };//是否已被标记
+//int dist[10010] = { 0 };//距离起始点的最短距离
+//int n, m, s;
+//
+//void dijkstra()
+//{
+//    int i, j;
+//
+//    //for (i = 0; i < n; i++)
+//    //    dist[i] = INT_MAX;
+//    memset(dist, 0x3f, sizeof(dist));
+//    dist[s] = 0;
+//
+//
+//    //找最短距离，标记,加入最短路径
+//    for (i = 0; i < n; i++)/*注意是i < n，不是m*/
+//    {
+//        int t = -1;
+//        for (j = 0; j < n; j++)
+//        {
+//            if (st[j] == 0 && (t == -1 || dist[j] < dist[t]))
+//                t = j;
+//        }
+//
+//        st[t] = 1;
+//
+//        for (j = 0; j < n; j++)
+//        {
+//            dist[j] = min(dist[j], dist[t] + jz[t][j]);
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    cin >> n >> m >> s;
+//    int u, v, w, i;
+//    memset(jz, 0x3f, sizeof(jz));
+//
+//    for (i = 0; i < m; i++)
+//    {
+//        cin >> u >> v >> s;
+//        jz[u][v] = min(jz[u][v], s);
+//    }
+//
+//    dijkstra();
+//    for (i = 0; i < n; i++)
+//    {
+//        if (dist[i] == 0x3f3f3f3f)
+//            dist[i] = INT_MAX;
+//        cout << dist[i] << ' ';
+//    }
+//    cout << endl;
+//    return 0;
+//}
+
+
+/*法二：结构体，堆优化*/
+//要一个结构体，存一个点相关的东西（to, wei, next）(终点， 权值， 下一个儿子)
+//cnt:结构体下标
+//head[MAX]:head[i]:查找i点的第一个儿子
+//pos:将被标记的值
+//ans[MAX]:最短距离
+//visit[MAX]:是否被标记过
+
+//const int MAX = 1e6;
+//int n, m, s;
+//int cnt;
+//int head[MAX];
+//int visit[MAX];
+//int ans[MAX];
+//
+//struct EDGE
+//{
+//    int to;
+//    int next;
+//    int wei;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].wei = w;
+//    edge[cnt].to = v;
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    cin >> n >> m >> s;
+//    int u, v, w;
+//    int i;
+//
+//    //初始化ans
+//    for (i = 1; i <= n; i++)
+//        ans[i] = INT_MAX;
+//
+//    ans[s] = 0;
+//
+//    //形成有向图
+//    for (i = 1; i <= m; i++)//注意i不可以从0开始啊！！！！！！！！！！！
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//    }
+//
+//    int pos = s;
+//    while (visit[pos] == 0)
+//    {
+//        visit[pos] = 1;//标记
+//        int minn = INT_MAX;
+//
+//        //更新最短路径
+//        for (i = head[pos]; i != 0; i = edge[i].next)//i != 0  :没有到最后一个儿子
+//        {
+//            if (visit[edge[i].to] == 0 && ans[edge[i].to] > ans[pos] + edge[i].wei)//下一个儿子到起点的距离 > 最短路径 + 下一个儿子的权值
+//                ans[edge[i].to] = ans[pos] + edge[i].wei;
+//        }
+//
+//        //找最小的
+//        for (i = 1; i <= n; i++)
+//        {
+//            if (visit[i] == 0 && ans[i] < minn)
+//            {
+//                minn = ans[i];
+//                pos = i;
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//        cout << ans[i] << ' ';
+//    cout << endl;
+//    return 0;
+//}
+
+
+//自己的AC代码：
+////题解：https://www.luogu.com.cn/article/oswxjzrl
+//
+//#include <iostream>
+//#include <climits>
+//
+//using namespace std;
+//
+//const int MAX = 1e6;
+//int cnt;//结构体下标
+//int visit[MAX];//标记
+//int n, m, s;
+//int head[MAX];//存放儿子
+//int ans[MAX];//放到起点的最短距离
+//
+//struct EDGE
+//{
+//    int wei;//权值
+//    int to;//目的地
+//    int next;//下一个儿子
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].wei = w;
+//    edge[cnt].to = v;
+//    edge[cnt].next = head[u];//将下一个儿子记录
+//    head[u] = cnt;//更新第一个儿子
+//}
+//
+//int main()
+//{
+//    cin >> n >> m >> s;
+//    int i;
+//
+//    //初始化ans
+//    for (i = 1; i <= n; i++)
+//        ans[i] = INT_MAX;
+//
+//    ans[s] = 0;
+//
+//    int u, v, w;
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//    }
+//
+//    int pos = s;//初始化pos为s
+//    while (visit[pos] == 0)
+//    {
+//        int minn = INT_MAX;//注意更新
+//        visit[pos] = 1;//标记
+//
+//        //更新儿子的最短路径
+//        for (i = head[pos]; i != 0; i = edge[i].next)
+//        {
+//            if (visit[edge[i].to] == 0 && ans[edge[i].to] > ans[pos] + edge[i].wei)
+//                ans[edge[i].to] = ans[pos] + edge[i].wei;
+//        }
+//
+//        //找最短路径
+//        for (i = 1; i <= n; i++)
+//        {
+//            if (visit[i] == 0 && ans[i] < minn)
+//            {
+//                minn = ans[i];
+//                pos = i;
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//        cout << ans[i] << ' ';
+//    cout << endl;
+//    return 0;
+//}
+/*题解*/
 /*
-const int MaxN = 100010, MaxM = 500010;
-
+#include<iostream>
+using namespace std;
+int head[100000],cnt;//head[i]:存儿子，cnt:结构体下标
+long long ans[1000000];//最短路径
+bool vis[1000000];//标记
+int m,n,s;
 struct edge
 {
-    int to, dis, next;
-};
-
-edge e[MaxM];
-int head[MaxN], dis[MaxN], cnt;
-bool vis[MaxN];
-int n, m, s;
-
-inline void add_edge( int u, int v, int d )
+    int to;//重点
+    int nextt;//下一个儿子
+    int wei;//权值
+}edge[1000000];
+void addedge(int x,int y,int z)
 {
-    cnt++;
-    e[cnt].dis = d;
-    e[cnt].to = v;
-    e[cnt].next = head[u];
-    head[u] = cnt;
+    edge[++cnt].to=y;//终点
+    edge[cnt].wei=z;//权值
+    edge[cnt].nextt=head[x];//标记儿子
+    head[x]=cnt;//更新儿子
 }
-
-struct node
+int main()
 {
-    int dis;
-    int pos;
-    bool operator <( const node &x )const
+    cin>>m>>n>>s;
+    for(int i=1;i<=n;i++)
     {
-        return x.dis < dis;
+        ans[i]=2147483647;
     }
-};
-
-std::priority_queue<node> q;
-
-
-inline void dijkstra()
-{
-    dis[s] = 0;
-    q.push( ( node ){0, s} );
-    while( !q.empty() )
+    ans[s]=0;
+    for(int i=1;i<=n;i++)
     {
-        node tmp = q.top();
-        q.pop();
-        int x = tmp.pos, d = tmp.dis;
-        if( vis[x] )
-            continue;
-        vis[x] = 1;
-        for( int i = head[x]; i; i = e[i].next )
+        int a,b,c;
+        cin>>a>>b>>c;
+        addedge(a,b,c);
+    }
+    int pos=s;
+    while(vis[pos]==0)
+    {
+        long long minn=2147483647;
+        vis[pos]=1;
+        for(int i=head[pos];i!=0;i=edge[i].nextt)
         {
-            int y = e[i].to;
-            if( dis[y] > dis[x] + e[i].dis )
+            if(!vis[edge[i].to]&&ans[edge[i].to]>ans[pos]+edge[i].wei)
             {
-                dis[y] = dis[x] + e[i].dis;
-                if( !vis[y] )
-                {
-                    q.push( ( node ){dis[y], y} );
-                }
+                ans[edge[i].to]=ans[pos]+edge[i].wei;
+            }
+        }
+        for(int i=1;i<=m;i++)
+        {
+            if(ans[i]<minn&&vis[i]==0)
+            {
+                minn=ans[i];
+                pos=i;
             }
         }
     }
+    for(int i=1;i<=m;i++)
+    {
+        cout<<ans[i]<<' ';
+    }
 }
+*/
 
+
+//P4779 【模板】单源最短路径（标准版）
+//https://www.luogu.com.cn/problem/P4779
+
+//题解：https://www.luogu.com.cn/article/s581e0wm
+
+//友情提示:正权图  请  使用dijkstra算法,   负权图  请  使用SPFA算法
+
+//弱化版的代码超时---->要用堆优化
+/*
+核心：priority_queue< pair<int,int> > 用优先队列来取最近的点，就不用遍历找点了
+
+在pq中，是按pair的第一个元素（first）由大到小排序的，所以pair<距离，点号>，注意因为要的是最小值，所以距离要存负值
+其实距离是纯纯的工具人，我们只是需要它来维持点的排序
+
+每次取队首h，取出的就是dis最短的点
+还要注意：
+如果这个点的dis不等于h的dis，说明这个点在入队之后被更新了，那么我们就不用这个点了，直接continue；
+因为后面会有个h2点比h1的dis更小，用h1更新就没有意义了
+*/
+
+/*
+https://blog.csdn.net/m0_60544208/article/details/124807279?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170954983416800192212261%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=170954983416800192212261&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-124807279-null-null.142^v99^pc_search_result_base3&utm_term=dijkstra%E5%A0%86%E4%BC%98%E5%8C%96&spm=1018.2226.3001.4187
+*/
+
+//使用优先队列，注意：优先队列是从大到小排列，所以存进去应该存负数
+//#include <queue>
+//#include <climits>
+//
+//const int MAX = 1e6;
+//int n, m, s;
+//int ans[MAX];
+//int cnt;
+//int head[MAX];
+//
+//struct EDGE
+//{
+//    int next;
+//    int wei;
+//    int to;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].to = v;
+//    edge[cnt].wei = w;
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    cin >> n >> m >> s;
+//
+//    int u, v, w;
+//    int i;
+//    
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//        ans[i] = INT_MAX;
+//    ans[s] = 0;
+//
+//    priority_queue<pair<int, int> >que;//距离，点号
+//    que.push({ 0, s });
+//
+//    while (!que.empty())
+//    {
+//        int qh = que.top().first;//距离
+//        int h = que.top().second;//点号----->相当于没有优化的pos
+//        que.pop();
+//
+//        if (qh + ans[h] != 0)/*说明最短路径已经更新，该数无效*/
+//            /*注意：
+//            如果这个点的dis不等于h的dis，说明这个点在入队之后被更新了，那么我们就不用这个点了，直接continue；
+//            因为后面会有个h2点比h1的dis更小，用h1更新就没有意义了
+//            */
+//            continue;
+//
+//        for (i = head[h]; i != 0; i = edge[i].next)
+//        {
+//            if (ans[edge[i].to] > ans[h] + edge[i].wei)
+//            {
+//                ans[edge[i].to] = ans[h] + edge[i].wei;
+//                que.push({ - ans[edge[i].to], edge[i].to });
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//        cout << ans[i] << ' ';
+//
+//    cout << endl;
+//
+//    return 0;
+//}
+
+
+////自己的AC代码：
+//#include <queue>
+///*堆优化：利用优先队列，降低复杂度，直接排序，注意优先队列是由大到小排列的,因此距离是负数 */
+//#include <climits>
+//#include <iostream>
+//
+//using namespace std;
+//
+//const int MAX = 1e6;
+//int n, m, s;
+//int ans[MAX];
+//int cnt;
+//int head[MAX];
+//int visit[MAX];
+//
+//struct EDGE
+//{
+//    int to;
+//    int next;
+//    int wei;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].wei = w;
+//    edge[cnt].to = v;
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    int i;
+//    int u, v, w;
+//    cin >> n >> m >> s;
+//
+//    for (i = 1; i <= n; i++)
+//        ans[i] = INT_MAX;
+//    ans[s] = 0;
+//
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//    }
+//
+//    priority_queue<pair<int, int> >que;//距离，点
+//    que.push({0, s});
+//
+//    while (!que.empty())
+//    {
+//        int qh = que.top().first;
+//        int h = que.top().second;
+//        que.pop();/*记得pop()!!!!!!!!!*/
+//
+//        if (visit[h] == 0)
+//        {
+//            visit[h] = 1;
+//            for (i = head[h]; i != 0; i = edge[i].next)//不断找下一个儿子，直到找完
+//            {
+//                if (ans[edge[i].to] > ans[h] + edge[i].wei)
+//                {
+//                    ans[edge[i].to] = ans[h] + edge[i].wei;
+//                    if (visit[edge[i].to] == 0)
+//                        que.push({ -ans[edge[i].to], edge[i].to });
+//
+//                }
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//        cout << ans[i] << ' ';
+//    cout << endl;
+//    return 0;
+//}
+
+
+//#include <iostream>
+//#include <queue>
+//#include <vector>
+//
+//using namespace std;
+//
+////A - 拓扑排序 / 家谱树
+////https://vjudge.net/contest/613618#problem/A
+//
+////拓扑排序：找到入度为0的点，将其写入答案，再删去其箭头，再继续找入度为0的点，循环往复
+///*题解：https://blog.csdn.net/lq1990717/article/details/128322988?ops_request_misc=&request_id=&biz_id=102&utm_term=A%20-%20%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%20/%20%E5%AE%B6%E8%B0%B1%E6%A0%91&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-128322988.142^v99^pc_search_result_base3&spm=1018.2226.3001.4187*/
+//
+//vector<int>edeg[101];
+//int n, deg[101] = { 0 };//入度
+//void init()//建图
+//{
+//    cin >> n;
+//    int i, val;
+//    for (i = 1; i <= n; i++)
+//    {
+//        while (cin >> val && val != 0)
+//        {
+//            edeg[i].push_back(val);
+//            deg[val]++;
+//        }
+//    }
+//}
+//
+//void toposort()//拓扑排序
+//{
+//    int i;
+//    queue<int> que;
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (deg[i] == 0)
+//        {
+//            cout << i << ' ';
+//            que.push(i);
+//        }
+//    }
+//
+//    while (!que.empty())
+//    {
+//        int t = que.front();
+//        que.pop();
+//
+//        for (int i : edeg[t])
+//        //相当于i表示edeg[t]的第一个元素，进行一次循环后就是第二个元素，循环往复
+//        {
+//            deg[i]--;
+//            if (deg[i] == 0)
+//            {
+//                cout << i << ' ';
+//                que.push(i);
+//                //push的原因：可能i（也就是edeg[t]）还有箭头指向其他的数，也就是后面辈分比它小的，要通过i来找比它辈分小的
+//            }
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    init();//建图
+//    toposort();//拓扑排序
+//    return 0;
+//}
+
+
+//P1629 邮递员送信
+//https://www.luogu.com.cn/problem/P1629
+
+//邮局在节点 1
+
+//建图：dijkstra算法，只要把返回的路线也建好就可以，
+// 
+// 法一：建两个图
+// 
+// 法二：
+// 但是要建反图，需要每个节点 + n----->原图
+
+#include <iostream>
+#include <climits>
+#include <queue>
+#include <string.h>
+
+using namespace std;
+
+const int MAX = 1e4;
+int visit[MAX];
+int cnt;
+int ans[MAX];
+int head[MAX];
+
+struct EDGE
+{
+    int to;
+    int next;
+    int wei;
+}edge[MAX];
+
+void add(int u, int v, int w)
+{
+    cnt++;
+    edge[cnt].to = v;
+    edge[cnt].wei = w;
+    edge[cnt].next = head[u];
+    head[u] = cnt;
+}
 
 int main()
 {
-    scanf( "%d%d%d", &n, &m, &s );
-    for(int i = 1; i <= n; ++i)dis[i] = 0x7fffffff;
-    for( register int i = 0; i < m; ++i )
+    int n, m;
+    cin >> n >> m;
+
+    memset(ans, 0x3f, sizeof(ans));
+    int i;
+    int u, v, w;
+    for (i = 1; i <= m; i++)
     {
-        register int u, v, d;
-        scanf( "%d%d%d", &u, &v, &d );
-        add_edge( u, v, d );
+        cin >> u >> v >> w;
+        add(u, v, w);
+
     }
-    dijkstra();
-    for( int i = 1; i <= n; i++ )
-        printf( "%d ", dis[i] );
     return 0;
 }
-
-*/
