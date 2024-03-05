@@ -1,10 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <iostream>
 #include <queue>
 #include <vector>
 #include <unordered_map>
 #include <set>
 #include <stdio.h>
+#include <iostream>
 
 using namespace std;
 
@@ -242,6 +242,185 @@ int main(){
 
 */
 
+
+//P1038 [NOIP2003 提高组] 神经网络
+//https://www.luogu.com.cn/problem/P1038
+
+//有向无环图---->拓扑图----->建拓扑图------>找入度为0的点
+//vector【起点】 = 终点的集合    edge//便于删指向终点的箭头
+//dge数组:入度
+
+
+//输出层就是没有箭头指出去的点
+
+//阈值，
+// i,j,ij权值，----->像单源最短路径
+// 当前状态，初始状态
+
+#include <queue>
+#include <vector>
+#include <iostream>
+#include <map>
+#include <unordered_map>
+
+using namespace std;
+
+const int MAX = 105;
+
+vector <int>edge[MAX];//edge[i] = {j, Wij}
+unordered_map<int, int>mp;//i,阈值
+int dge[MAX] = { 0 };//入度
+int n, p;
+int C0[101] = { 0 }, C[101] = { 0 };//最初状态，目前状态
+int head[MAX];
+
+struct  W
+{
+    int val;//边权值
+    //int i;
+    int j;
+    int next;//下一个儿子
+    //int count;//指向该点的箭头数量
+}W[MAX];
+
+void add(int i, int j, int w)
+{
+    W[i].next= head[i];
+    head[i] = j;
+    W[i].j = j;
+    W[i].val = w;
+    dge[j]++;
+    edge[i].push_back(j);
+    //W[j].count++;
+}
+
+void init()//建图
+{
+    cin >> n >> p;
+    int i, j;
+    int a, x, w;
+
+    for (a = 1; a <= n; a++)
+    {
+        cin >> C0[a] >> x;
+        mp[a] = x;
+        C[a] = C0[a];
+    }
+
+    for (a = 0; a < p; a++)
+    {
+        cin >> i >> j >> w;
+        add(i, j, w);
+    }
+}
+
+void calculate()
+{
+    int  a, b, sum = 0;
+    for (a = 1; a <= n; a++)//相当于公式的i
+    {
+        sum = 0;//求wc的和
+        for (b = 1; b <= n; b++)//相当于公式的j
+        {
+            if (a == b)
+                continue;
+
+            for (int x : head[b])
+            {
+                sum += C[b] * W[b].val;
+            }
+        }
+        C[a] = sum - mp[a];
+    }
+}
+
+int main()
+{
+    init();
+    calculate();
+    int a;
+    for (a = 1; a <= n; a++)
+    {
+        if ()
+    }
+    return 0;
+}
+
+
+/*
+题解：https://www.luogu.com.cn/article/ss93j1hu
+*/
+
+/*
+#include<queue>
+#include<cstdio>
+#include<algorithm>
+#define N 101
+using namespace std;
+struct edge{
+    int to,val,nxt;//
+} e[N*N];
+struct answer{
+    int id,val;
+} ans[N];
+int h,i,m,n,t,u,v,w,U,c[N],hd[N],out[N],vis[N];
+queue <int> q;
+int cnt=0,flag=0;
+ inline bool cmp(answer aa,answer bb)
+  {return aa.id<bb.id;}
+ inline void build(int u,int v,int w)
+ {
+    cnt++;
+    e[cnt].to=v;
+    e[cnt].val=w;
+    e[cnt].nxt=hd[u];
+    hd[u]=cnt;
+ }
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(i=1;i<=n;i++)
+    {
+        vis[i]=out[i]=0;
+        scanf("%d%d",&c[i],&U);
+        //这里不可以直接减，初始层也有可能有阈值，但不能减去.(题目要求)
+        if(c[i]>0)
+         {q.push(i);vis[i]=1;}//vis表示是否已入过队
+        else c[i]-=U;
+    }
+    for(i=1;i<=m;i++)
+    {
+        scanf("%d%d%d",&u,&v,&w);
+        build(u,v,w);
+        out[u]=1;//out表示有无出边，用于最后找输出层
+    }
+    while(!q.empty())
+    {
+        h=q.front();q.pop();
+        if(c[h]<=0) continue;
+        for(i=hd[h];i;i=e[i].nxt)
+        {
+            t=e[i].to;
+            c[t]+=e[i].val*c[h];
+            if(!vis[t])
+            {
+                q.push(t);
+                vis[t]=1;
+            }
+        }
+    }
+    for(i=1;i<=n;i++)
+     if(!out[i]&&c[i]>0)
+      {printf("%d %d\n",i,c[i]);flag=1;}
+    if(!flag) {puts("NULL");return 0;}
+    return 0;
+}
+
+（修改了一点点码风）
+拓扑排序时把continue的判断放到了前向星遍历之前，理论上讲（至少我现在是这么理解的）更科学一点
+好吧看来看自己一年前的代码翻看自己三年前的空间一样果然惊喜不断，最后我们成功又缩短了不少，思路也更清晰了一点。
+所以，既然我又加强了一下题解，何不
+*/
 
 ////P4779 【模板】单源最短路径（标准版）
 ////https://www.luogu.com.cn/problem/P4779
@@ -895,60 +1074,60 @@ https://blog.csdn.net/m0_60544208/article/details/124807279?ops_request_misc=%25
 //}
 
 
-//P1629 邮递员送信
-//https://www.luogu.com.cn/problem/P1629
-
-//邮局在节点 1
-
-//建图：dijkstra算法，只要把返回的路线也建好就可以，
-// 
-// 法一：建两个图
-// 
-// 法二：
-// 但是要建反图，需要每个节点 + n----->原图
-
-#include <iostream>
-#include <climits>
-#include <queue>
-#include <string.h>
-
-using namespace std;
-
-const int MAX = 1e4;
-int visit[MAX];
-int cnt;
-int ans[MAX];
-int head[MAX];
-
-struct EDGE
-{
-    int to;
-    int next;
-    int wei;
-}edge[MAX];
-
-void add(int u, int v, int w)
-{
-    cnt++;
-    edge[cnt].to = v;
-    edge[cnt].wei = w;
-    edge[cnt].next = head[u];
-    head[u] = cnt;
-}
-
-int main()
-{
-    int n, m;
-    cin >> n >> m;
-
-    memset(ans, 0x3f, sizeof(ans));
-    int i;
-    int u, v, w;
-    for (i = 1; i <= m; i++)
-    {
-        cin >> u >> v >> w;
-        add(u, v, w);
-
-    }
-    return 0;
-}
+////P1629 邮递员送信
+////https://www.luogu.com.cn/problem/P1629
+//
+////邮局在节点 1
+//
+////建图：dijkstra算法，只要把返回的路线也建好就可以，
+//// 
+//// 法一：建两个图
+//// 
+//// 法二：
+//// 但是要建反图，需要每个节点 + n----->原图
+//
+//#include <iostream>
+//#include <climits>
+//#include <queue>
+//#include <string.h>
+//
+//using namespace std;
+//
+//const int MAX = 1e4;
+//int visit[MAX];
+//int cnt;
+//int ans[MAX];
+//int head[MAX];
+//
+//struct EDGE
+//{
+//    int to;
+//    int next;
+//    int wei;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].to = v;
+//    edge[cnt].wei = w;
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    int n, m;
+//    cin >> n >> m;
+//
+//    memset(ans, 0x3f, sizeof(ans));
+//    int i;
+//    int u, v, w;
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//
+//    }
+//    return 0;
+//}
