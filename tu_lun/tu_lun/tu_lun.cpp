@@ -243,19 +243,113 @@ int main(){
 */
 
 
+////P1038 [NOIP2003 提高组] 神经网络
+////https://www.luogu.com.cn/problem/P1038
+//
+////有向无环图---->拓扑图----->建拓扑图------>找入度为0的点
+////vector【起点】 = 终点的集合    edge//便于删指向终点的箭头
+////dge数组:入度
+//
+//
+////输出层就是没有箭头指出去的点
+//
+////阈值，
+//// i,j,ij权值，----->像单源最短路径
+//// 当前状态，初始状态
+//
+//#include <queue>
+//#include <vector>
+//#include <iostream>
+//#include <map>
+//#include <unordered_map>
+//
+//using namespace std;
+//
+//const int MAX = 105;
+//
+//vector <int>edge[MAX];//edge[i] = {j, Wij}
+//unordered_map<int, int>mp;//i,阈值
+//int dge[MAX] = { 0 };//入度
+//int n, p;
+//int C0[101] = { 0 }, C[101] = { 0 };//最初状态，目前状态
+//int head[MAX];
+//
+//struct  W
+//{
+//    int val;//边权值
+//    //int i;
+//    int j;
+//    int next;//下一个儿子
+//    //int count;//指向该点的箭头数量
+//}W[MAX];
+//
+//void add(int i, int j, int w)
+//{
+//    W[i].next= head[i];
+//    head[i] = j;
+//    W[i].j = j;
+//    W[i].val = w;
+//    dge[j]++;
+//    edge[i].push_back(j);
+//    //W[j].count++;
+//}
+//
+//void init()//建图
+//{
+//    cin >> n >> p;
+//    int i, j;
+//    int a, x, w;
+//
+//    for (a = 1; a <= n; a++)
+//    {
+//        cin >> C0[a] >> x;
+//        mp[a] = x;
+//        C[a] = C0[a];
+//    }
+//
+//    for (a = 0; a < p; a++)
+//    {
+//        cin >> i >> j >> w;
+//        add(i, j, w);
+//    }
+//}
+//
+//void calculate()
+//{
+//    int  a, b, sum = 0;
+//    for (a = 1; a <= n; a++)//相当于公式的i
+//    {
+//        sum = 0;//求wc的和
+//        for (b = 1; b <= n; b++)//相当于公式的j
+//        {
+//            if (a == b)
+//                continue;
+//
+//            for (int x : head[b])
+//            {
+//                sum += C[b] * W[b].val;
+//            }
+//        }
+//        C[a] = sum - mp[a];
+//    }
+//}
+//
+//int main()
+//{
+//    init();
+//    calculate();
+//    int a;
+//    for (a = 1; a <= n; a++)
+//    {
+//        if ()
+//    }
+//    return 0;
+//}
+
 //P1038 [NOIP2003 提高组] 神经网络
 //https://www.luogu.com.cn/problem/P1038
 
-//有向无环图---->拓扑图----->建拓扑图------>找入度为0的点
-//vector【起点】 = 终点的集合    edge//便于删指向终点的箭头
-//dge数组:入度
-
-
-//输出层就是没有箭头指出去的点
-
-//阈值，
-// i,j,ij权值，----->像单源最短路径
-// 当前状态，初始状态
+//视频讲解：https://www.bilibili.com/video/BV1EE411Y71U/?spm_id_from=333.337.search-card.all.click&vd_source=41fa3a36a9ab4fa3fc7b5ff1c034346c
 
 #include <queue>
 #include <vector>
@@ -266,85 +360,283 @@ int main(){
 using namespace std;
 
 const int MAX = 105;
-
-vector <int>edge[MAX];//edge[i] = {j, Wij}
-unordered_map<int, int>mp;//i,阈值
-int dge[MAX] = { 0 };//入度
 int n, p;
-int C0[101] = { 0 }, C[101] = { 0 };//最初状态，目前状态
+int cnt;
+int c[MAX], u[MAX];
+int in[MAX], out[MAX];
 int head[MAX];
+int vis[MAX];/**/
+queue<int>que;
 
-struct  W
+struct W
 {
-    int val;//边权值
-    //int i;
-    int j;
-    int next;//下一个儿子
-    //int count;//指向该点的箭头数量
+    int to;
+    int val;
+    int next;
 }W[MAX];
 
-void add(int i, int j, int w)
+void add(int u, int v, int w)
 {
-    W[i].next= head[i];
-    head[i] = j;
-    W[i].j = j;
-    W[i].val = w;
-    dge[j]++;
-    edge[i].push_back(j);
-    //W[j].count++;
+    cnt++;
+    W[u].to = v;
+    W[u].val = w;
+    W[u].next = head[u];
+    head[u] = cnt;
 }
 
-void init()//建图
+void init()
 {
     cin >> n >> p;
-    int i, j;
-    int a, x, w;
 
-    for (a = 1; a <= n; a++)
+    int i;
+    for (i = 1; i <= n; i++)
     {
-        cin >> C0[a] >> x;
-        mp[a] = x;
-        C[a] = C0[a];
+        cin >> c[i] >> u[i];
+        if (c[i] == 0)
+            c[i] -= u[i];
+        else
+        {
+            que.push(i);
+            //vis[i] = 1;
+        }
     }
 
-    for (a = 0; a < p; a++)
+    int u, v, w;
+    for (i = 1; i <= p; i++)
     {
-        cin >> i >> j >> w;
-        add(i, j, w);
+        cin >> u >> v >> w;
+        add(u, v, w);
+        in[v]++;
+        out[u]++;
     }
 }
 
-void calculate()
+void toposort()
 {
-    int  a, b, sum = 0;
-    for (a = 1; a <= n; a++)//相当于公式的i
-    {
-        sum = 0;//求wc的和
-        for (b = 1; b <= n; b++)//相当于公式的j
-        {
-            if (a == b)
-                continue;
+    int i;
 
-            for (int x : head[b])
+    while (!que.empty())
+    {
+        int h = que.front();
+        que.pop();
+
+        if (c[h] > 0)
+        {
+            int t;
+            for (i = head[h]; i != 0; i = W[i].next)
             {
-                sum += C[b] * W[b].val;
+                t = W[i].to;
+
+                c[t] += c[h] * W[i].val;
+                in[t]--;
+
+                if (/*vis[t] == 0 && */in[t] == 0)
+                {
+                    que.push(t);
+                  /*  vis[t] = 1;*/
+                }
             }
         }
-        C[a] = sum - mp[a];
     }
 }
 
 int main()
 {
     init();
-    calculate();
-    int a;
-    for (a = 1; a <= n; a++)
+    toposort();
+
+    int i;
+    int flag = 0;
+    for (i = 1; i <= n; i++)
     {
-        if ()
+        if (out[i] == 0 && c[i] > 0)
+        {
+            cout << i << ' ' << c[i] << endl;
+            flag = 1;
+        }
     }
+
+    if (flag == 0)
+        cout << "NULL" << endl;
     return 0;
 }
+
+
+/*
+戴宇豪题解：
+
+#include<queue>
+#include<cstdio>
+#include<algorithm>
+#define N 101
+
+using namespace std;
+
+struct edge{
+    int to,
+    val,
+    nxt;
+} e[N*N];
+
+int h,i,m,n,t,u,v,w,U,c[N],hd[N],out[N],vis[N];
+queue <int> q;
+int cnt=0,flag=0;
+
+ inline void build(int u,int v,int w)
+ {
+     cnt++;
+     e[cnt].to=v;
+     e[cnt].val=w;
+     e[cnt].nxt=hd[u];
+     hd[u]=cnt;
+ }
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(i=1;i<=n;i++)
+    {
+        vis[i]=out[i]=0;
+        scanf("%d%d",&c[i],&U);
+
+        if(c[i]>0)
+         {q.push(i);vis[i]=1;}
+        else c[i]-=U;
+    }
+    for(i=1;i<=m;i++)
+    {
+        scanf("%d%d%d",&u,&v,&w);
+        build(u,v,w);
+        out[u]=1;
+    }
+    while(!q.empty())
+    {
+        h=q.front();
+        q.pop();
+        if(c[h]<=0)
+            continue;
+
+        for(i=hd[h];i;i=e[i].nxt)
+        {
+            t=e[i].to;
+            c[t]+=e[i].val*c[h];
+            if(!vis[t])
+            {
+                q.push(t);
+                vis[t]=1;
+            }
+        }
+    }
+    for(i=1;i<=n;i++)
+     if(!out[i]&&c[i]>0)
+      {printf("%d %d\n",i,c[i]);flag=1;}
+    if(!flag) {puts("NULL");return 0;}
+
+}
+*/
+
+
+/*错误代码*/
+//vector <int>edge[MAX];
+//int n, p;
+//int C0[101] = { 0 }, U[MAX];//最初状态,阈值
+//int head[MAX];
+//int in[MAX], out[MAX];//入度,出度
+//int cnt;
+//queue<int>que;
+//
+//struct  W
+//{
+//    int val;//边权值
+//    int j;
+//    int next;//下一个儿子
+//}W[MAX];
+//
+//void add(int i, int j, int w)
+//{
+//    cnt++;
+//    W[i].j = j;
+//    W[i].val = w;
+//    W[i].next = head[i];
+//    head[i] = j;
+//}
+//
+//void init()//建图
+//{
+//    cin >> n >> p;
+//    int i, j;
+//    int a, x, w;
+//
+//    for (a = 1; a <= n; a++)
+//    {
+//        cin >> C0[a] >> U[a];
+//        
+//        if (C0[a] == 0)
+//            C0[a] -= U[a];
+//    }
+//
+//    for (a = 0; a < p; a++)
+//    {
+//        cin >> i >> j >> w;
+//        add(i, j, w);
+//        in[j]++;
+//        out[i]++;
+//    }
+//}
+//
+//void toposort()
+//{
+//
+//    int a;
+//    for (a = 1; a <= n; a++)
+//    {
+//        if (C0[a])
+//            que.push(a);
+//    }
+//
+//    while (que.size() < n)
+//    {
+//        int ph = que.front();
+//
+//        for (int i : edge[ph])
+//        {
+//            //C0[i] += C0[ph] * W[i].val;
+//            in[i]--;
+//            if (in[i] == 0)
+//                que.push(i);
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    init();
+//    toposort();
+//
+//    int i, b;
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        int h = que.front();
+//        que.pop();
+//
+//        if (C0[h] > 0)//小于0也不可
+//        {
+//            for (b = head[h]; b; b = W[b].next)
+//            {
+//                int t = W[b].j;
+//                C0[t] += C0[h] * W[t].val;
+//            }
+//        }
+//    }
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (out[i] == 0)
+//        {
+//            cout << i << ' '<< C0[i] << endl ;
+//        }
+//    }
+//    return 0;
+//}
 
 
 /*
