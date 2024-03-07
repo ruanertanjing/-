@@ -392,12 +392,14 @@ void init()
     for (i = 1; i <= n; i++)
     {
         cin >> c[i] >> u[i];
-        if (c[i] == 0)
-            c[i] -= u[i];
-        else
+        if (c[i] > 0)
         {
             que.push(i);
             //vis[i] = 1;
+        }
+        else
+        {
+            c[i] -= u[i];
         }
     }
 
@@ -425,6 +427,8 @@ void toposort()
             int t;
             for (i = head[h]; i != 0; i = W[i].next)
             {
+                if (c[i] <= 0)
+                    continue;
                 t = W[i].to;
 
                 c[t] += c[h] * W[i].val;
@@ -1420,6 +1424,83 @@ https://blog.csdn.net/m0_60544208/article/details/124807279?ops_request_misc=%25
 //        cin >> u >> v >> w;
 //        add(u, v, w);
 //
+//    }
+//    return 0;
+//}
+
+////B3647 【模板】Floyd
+////https://www.luogu.com.cn/problem/B3647
+//
+////floyd算法
+////要注意中转点，可以直接i到j，也可以i->k,k->j，因此要比较两个数据的大小，最后表中的是最短路径
+////https://www.bilibili.com/video/BV14R4y1x7GB/?spm_id_from=333.337.search-card.all.click
+////注意是无向图啊！！！！！！！！！！！
+//
+//#include <climits>
+//
+//int main()
+//{
+//    int n, m, i, j, u, v, w;
+//    long long board[105][105] = { 0 };//存最短路径
+//
+//    /*
+//        0    1      2
+//    0   0 dmin(0->1)
+//    1        0
+//    2               0
+//    */
+//
+//    cin >> n >> m;
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        for (j = 1; j <= n; j++)
+//        {
+//            if (i == j)
+//                board[i][j] = 0;
+//            else
+//               board[i][j] = INT_MAX;
+//        }
+//    }
+//
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        if (w < board[u][v])
+//            board[u][v] = w;
+//        if (w < board[v][u])
+//            board[v][u] = w;
+//    }
+//
+//    int k;           
+//    for (k = 1; k <= n; k++)//把k当中转点,注意是放在i,j循环的外面
+//    {
+//        for (i = 1; i <= n; i++)//行，列
+//        {
+//            if (i == k)
+//                continue;
+//            for (j = 1; j <= n; j++)
+//            {
+//                if (j == k)
+//                    continue;
+//
+//                if (i == j)
+//                    continue;
+//
+//                if (board[i][k] != INT_MAX && board[k][j] != INT_MAX)
+//                    board[i][j] = min(board[i][j], board[i][k] + board[k][j]);
+//
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        for (j = 1; j <= n; j++)
+//        {
+//            cout << board[i][j] << ' ';
+//        }
+//        cout << endl;
 //    }
 //    return 0;
 //}
