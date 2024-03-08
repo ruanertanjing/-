@@ -346,125 +346,125 @@ int main(){
 //    return 0;
 //}
 
-//P1038 [NOIP2003 提高组] 神经网络
-//https://www.luogu.com.cn/problem/P1038
-
-//视频讲解：https://www.bilibili.com/video/BV1EE411Y71U/?spm_id_from=333.337.search-card.all.click&vd_source=41fa3a36a9ab4fa3fc7b5ff1c034346c
-
-#include <queue>
-#include <vector>
-#include <iostream>
-#include <map>
-#include <unordered_map>
-
-using namespace std;
-
-const int MAX = 105;
-int n, p;
-int cnt;
-int c[MAX], u[MAX];
-int in[MAX], out[MAX];
-int head[MAX];
-int vis[MAX];/**/
-queue<int>que;
-
-struct W
-{
-    int to;
-    int val;
-    int next;
-}W[MAX];
-
-void add(int u, int v, int w)
-{
-    cnt++;
-    W[u].to = v;
-    W[u].val = w;
-    W[u].next = head[u];
-    head[u] = cnt;
-}
-
-void init()
-{
-    cin >> n >> p;
-
-    int i;
-    for (i = 1; i <= n; i++)
-    {
-        cin >> c[i] >> u[i];
-        if (c[i] > 0)
-        {
-            que.push(i);
-            //vis[i] = 1;
-        }
-        else
-        {
-            c[i] -= u[i];
-        }
-    }
-
-    int u, v, w;
-    for (i = 1; i <= p; i++)
-    {
-        cin >> u >> v >> w;
-        add(u, v, w);
-        in[v]++;
-        out[u]++;
-    }
-}
-
-void toposort()
-{
-    int i;
-
-    while (!que.empty())
-    {
-        int h = que.front();
-        que.pop();
-
-        if (c[h] > 0)
-        {
-            int t;
-            for (i = head[h]; i != 0; i = W[i].next)
-            {
-                if (c[i] <= 0)
-                    continue;
-                t = W[i].to;
-
-                c[t] += c[h] * W[i].val;
-                in[t]--;
-
-                if (/*vis[t] == 0 && */in[t] == 0)
-                {
-                    que.push(t);
-                  /*  vis[t] = 1;*/
-                }
-            }
-        }
-    }
-}
-
-int main()
-{
-    init();
-    toposort();
-
-    int i;
-    int flag = 0;
-    for (i = 1; i <= n; i++)
-    {
-        if (out[i] == 0 && c[i] > 0)
-        {
-            cout << i << ' ' << c[i] << endl;
-            flag = 1;
-        }
-    }
-
-    if (flag == 0)
-        cout << "NULL" << endl;
-    return 0;
-}
-
+////P1038 [NOIP2003 提高组] 神经网络
+////https://www.luogu.com.cn/problem/P1038
+//
+////视频讲解：https://www.bilibili.com/video/BV1EE411Y71U/?spm_id_from=333.337.search-card.all.click&vd_source=41fa3a36a9ab4fa3fc7b5ff1c034346c
+//
+//#include <queue>
+//#include <vector>
+//#include <iostream>
+//#include <map>
+//#include <unordered_map>
+//
+//using namespace std;
+//
+//const int MAX = 105;
+//int n, p;
+//int cnt;
+//int c[MAX], u[MAX];
+//int in[MAX], out[MAX];
+//int head[MAX];
+//int vis[MAX];/**/
+//queue<int>que;
+//
+//struct W
+//{
+//    int to;
+//    int val;
+//    int next;
+//}W[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    W[u].to = v;
+//    W[u].val = w;
+//    W[u].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//void init()
+//{
+//    cin >> n >> p;
+//
+//    int i;
+//    for (i = 1; i <= n; i++)
+//    {
+//        cin >> c[i] >> u[i];
+//        if (c[i] > 0)
+//        {
+//            que.push(i);
+//            //vis[i] = 1;
+//        }
+//        else
+//        {
+//            c[i] -= u[i];
+//        }
+//    }
+//
+//    int u, v, w;
+//    for (i = 1; i <= p; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//        in[v]++;
+//        out[u]++;
+//    }
+//}
+//
+//void toposort()
+//{
+//    int i;
+//
+//    while (!que.empty())
+//    {
+//        int h = que.front();
+//        que.pop();
+//
+//        if (c[h] > 0)
+//        {
+//            int t;
+//            for (i = head[h]; i != 0; i = W[i].next)
+//            {
+//                if (c[i] <= 0)
+//                    continue;
+//                t = W[i].to;
+//
+//                c[t] += c[h] * W[i].val;
+//                in[t]--;
+//
+//                if (/*vis[t] == 0 && */in[t] == 0)
+//                {
+//                    que.push(t);
+//                  /*  vis[t] = 1;*/
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    init();
+//    toposort();
+//
+//    int i;
+//    int flag = 0;
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (out[i] == 0 && c[i] > 0)
+//        {
+//            cout << i << ' ' << c[i] << endl;
+//            flag = 1;
+//        }
+//    }
+//
+//    if (flag == 0)
+//        cout << "NULL" << endl;
+//    return 0;
+//}
+//
 
 /*
 戴宇豪题解：
@@ -503,8 +503,12 @@ int main()
         scanf("%d%d",&c[i],&U);
 
         if(c[i]>0)
-         {q.push(i);vis[i]=1;}
-        else c[i]-=U;
+        {
+            q.push(i);
+            vis[i]=1;
+        }
+        else 
+            c[i]-=U;
     }
     for(i=1;i<=m;i++)
     {
@@ -532,8 +536,15 @@ int main()
     }
     for(i=1;i<=n;i++)
      if(!out[i]&&c[i]>0)
-      {printf("%d %d\n",i,c[i]);flag=1;}
-    if(!flag) {puts("NULL");return 0;}
+     {
+        printf("%d %d\n",i,c[i]);
+        flag=1;
+     }
+    if(!flag) 
+    {
+        puts("NULL");
+        return 0;
+    }
 
 }
 */
@@ -1504,3 +1515,563 @@ https://blog.csdn.net/m0_60544208/article/details/124807279?ops_request_misc=%25
 //    }
 //    return 0;
 //}
+
+
+
+                /*复习*/
+
+////A - 拓扑排序 / 家谱树
+////https://vjudge.net/contest/613618#problem/A
+//
+//#include <vector>
+//#include <iostream>
+//#include <queue>
+//
+//using namespace std;
+//
+//const int MAX = 105;
+//vector<int> dege[MAX];
+//int deg[MAX];//入度
+//int n;
+//
+//void init()//建图
+//{
+//    cin >> n;
+//    int i;
+//    int a, b;
+//
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        while (cin >> a && a != 0)
+//        {
+//            deg[a]++;
+//            dege[i].push_back(a);
+//        }
+//    }
+//}
+//
+//void toposort()//拓扑排序
+//{
+//    queue<int> que;
+//    int i;
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (deg[i] == 0)
+//        {
+//            cout << i << ' ';
+//            que.push(i);
+//        }
+//    }
+//
+//    while (!que.empty())
+//    {
+//        int h = que.front();
+//        que.pop();
+//
+//        for (int t : dege[h])
+//        {
+//            deg[t]--;
+//            if (deg[t] == 0)
+//            {
+//                cout << t << ' ';
+//                que.push(t);
+//            }
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    init();
+//    toposort();
+//    return 0;
+//}
+
+
+
+////4779 【模板】单源最短路径（标准版）
+////https://www.luogu.com.cn/problem/P
+//
+////堆优化了的会自动排序，不用设置minn每次去找哪段距离最短
+//
+//#include <iostream>
+//#include <queue>
+//#include <climits>
+//
+//
+//using namespace std;
+//
+//const int MAX = 1e6;/*1e6可能小了*/
+//int head[MAX];
+//int n, m, s;
+//int ans[MAX];
+//int visit[MAX];
+//int cnt;
+//
+//struct EDGE
+//{
+//    int to;
+//    int next;
+//    int wei;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].wei = w;
+//    edge[cnt].to = v;/*注意中括号内是cnt，不是u*/
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    cin >> n >> m >> s;
+//
+//    int i;
+//    for (i = 1; i <= n; i++)
+//    {
+//        ans[i] = INT_MAX;
+//    }
+//    ans[s] = 0;
+//
+//    int u, v, w;
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//    }
+//
+//    priority_queue<pair<int, int> >que;//优先队列里存的是:距离   点号
+//    que.push({ 0,s });
+//
+//    while (!que.empty())
+//    {
+//        int ph = que.top().first;
+//        int h = que.top().second;
+//        que.pop();
+//
+//        if (visit[h] == 0)
+//        {
+//            visit[h] = 1;
+//
+//            int i = head[h];
+//            for (i = head[h]; i != 0; i = edge[i].next)
+//            {
+//                if (ans[edge[i].to] > edge[i].wei + ans[h]/*注意是h，不是i*/)
+//                {
+//                    ans[edge[i].to] = edge[i].wei + ans[h];
+//
+//                    if (visit[edge[i].to] == 0)
+//                        que.push({ -ans[edge[i].to], edge[i].to});
+//                }
+//            }
+//        }
+//
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        cout << ans[i] << ' ';
+//    }
+//    cout << endl;
+//    return 0;
+//}
+
+
+////B3647 【模板】Floyd
+////https://www.luogu.com.cn/problem/B3647
+//
+//#include <climits>
+//#include <iostream>
+//
+//using namespace std;
+//
+//const int MAX = 105;
+//int board[MAX][MAX];
+//
+//int main()
+//{
+//    int n, m;
+//    cin >> n >> m;
+//    int i, j;
+//    for (i = 1; i <= n; i++)
+//    {
+//        for (j = 1; j <= n; j++)
+//        {
+//            if (i == j)
+//            {
+//                board[i][j] = 0;
+//                continue;
+//            }
+//            board[i][j] = INT_MAX;
+//
+//        }
+//    }
+//
+//    int u, v, w;
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        if (w < board[u][v])
+//            board[u][v] = w;
+//        if (w < board[v][u])
+//            board[v][u] = w;
+//    }
+//
+//    int k;
+//    for (k = 1; k <= n; k++)
+//    {
+//        for (i = 1; i <= n; i++)
+//        {
+//            if (i == k)
+//                continue;
+//            for (j = 1; j <= n; j++)
+//            {
+//                if (j == k)
+//                    continue;
+//                if (i == j)
+//                    continue;
+//
+//                if (board[i][k] == INT_MAX || board[k][j] == INT_MAX)
+//                    continue;
+//
+//                if (board[i][k] + board[k][j] < board[i][j])
+//                    board[i][j] = board[i][k] + board[k][j];
+//            }
+//        }
+//    }
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        for (j = 1; j <= n; j++)
+//        {
+//            cout << board[i][j] << ' ';
+//        }
+//        cout << endl;
+//    }
+//    return 0;
+//}
+
+
+
+/*
+戴宇豪题解：
+
+#include<queue>
+#include<cstdio>
+#include<algorithm>
+#define N 101
+
+using namespace std;
+
+struct edge{
+    int to,
+    val,
+    nxt;
+} e[N*N];
+
+int h,i,m,n,t,u,v,w,U,c[N],hd[N],out[N],vis[N];
+queue <int> q;
+int cnt=0,flag=0;
+
+ inline void build(int u,int v,int w)
+ {
+     cnt++;
+     e[cnt].to=v;
+     e[cnt].val=w;
+     e[cnt].nxt=hd[u];
+     hd[u]=cnt;
+ }
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for(i=1;i<=n;i++)
+    {
+        vis[i]=out[i]=0;
+        scanf("%d%d",&c[i],&U);
+
+        if(c[i]>0)
+        {
+            q.push(i);
+            vis[i]=1;
+        }
+        else
+            c[i]-=U;
+    }
+    for(i=1;i<=m;i++)
+    {
+        scanf("%d%d%d",&u,&v,&w);
+        build(u,v,w);
+        out[u]=1;
+    }
+    while(!q.empty())
+    {
+        h=q.front();
+        q.pop();
+        if(c[h]<=0)
+            continue;
+
+        for(i=hd[h];i;i=e[i].nxt)
+        {
+            t=e[i].to;
+            c[t]+=e[i].val*c[h];
+            if(!vis[t])
+            {
+                q.push(t);
+                vis[t]=1;
+            }
+        }
+    }
+    for(i=1;i<=n;i++)
+     if(!out[i]&&c[i]>0)
+     {
+        printf("%d %d\n",i,c[i]);
+        flag=1;
+     }
+    if(!flag)
+    {
+        puts("NULL");
+        return 0;
+    }
+
+}
+*/
+
+////P1038 [NOIP2003 提高组] 神经网络
+////https://www.luogu.com.cn/problem/P1038
+//
+//
+//#include <iostream>
+//#include <queue>
+//
+//using namespace std;
+//
+//const int MAX = 105;
+//int cnt;
+//int head[MAX];
+//int c[MAX];
+//int out[MAX];
+//int vis[MAX];
+//
+//struct EDGE
+//{
+//    int to;
+//    int next;
+//    int wei;
+//}edge[MAX];
+//
+//void add(int u, int v, int w)
+//{
+//    cnt++;
+//    edge[cnt].to = v;
+//    edge[cnt].wei = w;
+//    edge[cnt].next = head[u];
+//    head[u] = cnt;
+//}
+//
+//int main()
+//{
+//    int n, p;
+//    cin >> n >> p;
+//    int i;
+//    queue<int> que;
+//
+//
+//    int u;
+//    for (i = 1; i <= n; i++)
+//    {
+//        cin >> c[i] >> u;
+//        if (c[i] > 0)
+//        {
+//            que.push(i);
+//            vis[i] = 1;
+//        }
+//        else
+//            c[i] -= u;
+//    }
+//
+//    int v, w;
+//    for (i = 1; i <= p; i++)
+//    {
+//        cin >> u >> v >> w;
+//        add(u, v, w);
+//        out[u]++;
+//    }
+//
+//    while (!que.empty())
+//    {
+//        int h = que.front();
+//        que.pop();
+//
+//        if (c[h] <= 0)
+//            continue;
+//        else
+//        {
+//            i = head[h];
+//            for (i = head[h]; i != 0; i = edge[i].next)
+//            {
+//                int t = edge[i].to;
+//                c[t] += edge[i].wei * c[h];
+//                if (vis[t] == 0)
+//                {
+//                    que.push(t);
+//                    vis[t] = 1;
+//                }
+//            }
+//        }
+//    }
+//
+//    int flag = 0;
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (out[i] == 0 && c[i] > 0)
+//        {
+//            flag = 1;
+//            cout << i <<  ' ' << c[i] << endl;
+//        }
+//    }
+//
+//    if (flag == 0)
+//        cout << "NULL" << endl;
+//    return 0;
+//}
+
+
+
+//P1629 邮递员送信
+//https://www.luogu.com.cn/problem/P1629
+
+/*戴的代码
+#include <iostream>
+#include <cstring>
+#include <queue>
+using namespace std;
+const int N = 2e3 + 10;
+const int M = 2e5 + 10;
+typedef pair<int, int> PII;
+
+int e[M], ne[M], h[M], w[M], idx;
+bool st[N];
+int dis[N];
+void add(int a, int b, int c) 
+{
+    e[idx] = b, w[idx] = c, ne[idx] = h[a], h[a] = idx++;
+}
+
+void dijkstra(int x) 
+{
+    memset(dis, 0x3f, sizeof(dis));
+    priority_queue<PII, vector<PII>, greater<PII>> heap;
+    dis[x] = 0;
+    heap.push({0, x});
+    while (heap.size()) 
+    { // 当堆不为空时
+        PII t = heap.top(); // 取出堆顶元素
+        heap.pop(); // 弹出堆顶元素
+        int ver = t.second, distance = t.first; // 获取点的编号和距离
+        if (st[ver]) continue; // 如果该点已经被访问过，则跳过
+        st[ver] = true; // 标记该点为已访问
+        for (int i = h[ver]; i != -1; i = ne[i]) { // 遍历该点的所有出边
+            int j = e[i]; // 获取边的终点
+            if (dis[j] > distance + w[i]) {
+                dis[j] = distance + w[i];
+                heap.push({dis[j], j});
+            }
+        }
+    }
+}
+int main() {
+    memset(h, -1, sizeof h);
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < m; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        add(a, b, c);
+        add(b + n, a + n, c);
+    }
+    long long res = 0;
+    dijkstra(1);
+    for (int i = 2; i <= n; i++) res += dis[i];
+    dijkstra(1 + n);
+    for (int i = 2 + n; i <= n << 1; i++) res += dis[i];
+    cout << res << endl;
+    return 0;
+}
+*/
+
+//P1629 邮递员送信
+//https://www.luogu.com.cn/problem/P1629
+
+/*法一：Floyd*/
+//两个样例超时
+
+//2146483647
+
+#include <climits>
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 1010;
+int board[MAX][MAX];
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+
+    int i, j;
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+        {
+            if (i == j)
+                board[i][j] = 0;
+            else
+                board[i][j] = INT_MAX;
+        }
+    }
+
+    int u, v, w;
+    for (i = 1; i <= m; i++)
+    {
+        cin >> u >> v >> w;
+        if (w < board[u][v])
+            board[u][v] = w;
+    }
+
+    int k;
+    for (k = 1; k <= n; k++)
+    {
+        for (i = 1; i <= n; i++)
+        {
+            if (i == k)
+                continue;
+            for (j = 1; j <= n; j++)
+            {
+                if (j == k)
+                    continue;
+
+                if (i == j)
+                    continue;
+
+                if (board[i][k] != INT_MAX && board[k][j] != INT_MAX)
+                {
+                    if (board[i][k] + board[k][j] < board[i][j])
+                        board[i][j] = board[i][k] + board[k][j];
+                }
+            }
+        }
+    }
+
+    int sum = 0;
+    for (i = 2; i <= n; i++)
+    {
+        sum += board[i][1] + board[1][i];
+    }
+    cout << sum << endl;
+    return 0;
+}
