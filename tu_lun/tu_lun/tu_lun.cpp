@@ -2002,6 +2002,71 @@ int main() {
 }
 */
 
+/*
+洛谷题解：
+const int maxn = 1234, maxm = 123456;
+ll inf = 9000000000000000;
+int head[maxn << 1], ver[maxm << 1], wei[maxm << 1], nex[maxm << 1], tot, n;
+
+void addedge(int u, int v, int w) 
+{
+    ver[tot] = v;
+    wei[tot] = w;
+    nex[tot] = head[u];
+    head[u] = tot++;
+}
+
+struct nodeq {
+    int x;
+    ll dis;
+    nodeq(int X, ll DIS) :  x(X), dis(DIS) {}
+    bool operator > (const nodeq& o) const { return dis > o.dis; }
+};
+
+priority_queue< nodeq, vector<nodeq>, greater<nodeq> > q;
+ll dis[maxn << 1];
+void dij(int s) 
+{
+    for(int i = 1; i <= n << 1; ++i) 
+        dis[i] = inf;
+    dis[s] = 0;
+
+    q.push(nodeq(s, 0));
+    while(!q.empty()) 
+    {
+        nodeq cur = q.top(); q.pop();
+        if(dis[cur.x] < cur.dis) continue;
+        for(int i = head[cur.x]; ~i; i = nex[i]) 
+        {
+            if(dis[ver[i]] > cur.dis + wei[i]) 
+            {
+                dis[ver[i]] = cur.dis + wei[i];
+                q.push(nodeq(ver[i], dis[ver[i]]));
+            }
+        }
+    }
+}
+
+int main() {
+    memset(head, -1, sizeof(head));
+    int m, u, v, w;
+    ll ans = 0;
+    scanf("%d %d", &n, &m);
+    for(int i = 1; i <= m; ++i) 
+    {
+        scanf("%d %d %d", &u, &v, &w);
+        addedge(u, v, w);
+        addedge(v + n, u + n, w);
+    }
+    dij(1);
+    for(int i = 2; i <= n; ++i) ans += dis[i];
+    dij(1 + n);
+    for(int i = 2 + n; i <= n << 1; ++i) ans += dis[i];
+    printf("%lld\n", ans);
+    return 0;
+}
+*/
+
 //P1629 邮递员送信
 //https://www.luogu.com.cn/problem/P1629
 
@@ -2010,68 +2075,188 @@ int main() {
 
 //2146483647
 
-#include <climits>
+//#include <climits>
+//#include <iostream>
+//
+//using namespace std;
+//
+//const int MAX = 1010;
+//int board[MAX][MAX];
+//
+//int main()
+//{
+//    int n, m;
+//    cin >> n >> m;
+//
+//    int i, j;
+//    for (i = 1; i <= n; i++)
+//    {
+//        for (j = 1; j <= n; j++)
+//        {
+//            if (i == j)
+//                board[i][j] = 0;
+//            else
+//                board[i][j] = INT_MAX;
+//        }
+//    }
+//
+//    int u, v, w;
+//    for (i = 1; i <= m; i++)
+//    {
+//        cin >> u >> v >> w;
+//        if (w < board[u][v])
+//            board[u][v] = w;
+//    }
+//
+//    int k;
+//    for (k = 1; k <= n; k++)
+//    {
+//        for (i = 1; i <= n; i++)
+//        {
+//            if (i == k)
+//                continue;
+//            for (j = 1; j <= n; j++)
+//            {
+//                if (j == k)
+//                    continue;
+//
+//                if (i == j)
+//                    continue;
+//
+//                if (board[i][k] != INT_MAX && board[k][j] != INT_MAX)
+//                {
+//                    if (board[i][k] + board[k][j] < board[i][j])
+//                        board[i][j] = board[i][k] + board[k][j];
+//                }
+//            }
+//        }
+//    }
+//
+//    int sum = 0;
+//    for (i = 2; i <= n; i++)
+//    {
+//        sum += board[i][1] + board[1][i];
+//    }
+//    cout << sum << endl;
+//    return 0;
+//}
+
+
+/*法二：dijkstra*/
+//反向建图
+
+//按题中给的示例：1 -> 2 -> 3 -> 5 -> 4 ->1，建返图后就是 1 -> 2 + 6 -> 9 -> 10 -> 8
+
+/*注意MAX的值设定啊，因为最大权值可以到达1e4，然后边数可以到达1e5，所以至少要大于1e9*/
+/*!!!!!涉及链式前向星!!!!!!!!*/
+/*
+链式前向星:https://www.bilibili.com/video/BV1mJ411S7BB/?spm_id_from=333.1007.top_right_bar_window_history.content.click
+*/
+/*注意各个数组大小的设定啊！！！！！！！！！！！*/
+
 #include <iostream>
+#include <queue>
+#include <climits>
+#include <stdlib.h>
+#include <string.h>
 
 using namespace std;
+//const int MAX = 1e5;/*数据小了，开3e7过了，但是是碰巧*/
+//int head[MAX];
+//int cnt;
+//int ans[MAX];
+//int vis[MAX];
 
-const int MAX = 1010;
-int board[MAX][MAX];
+const int MAXM = 100005;
+const int MAXN = 1005;
+int head[MAXN * 2];//每个点的链
+int cnt;
+int ans[MAXN * 2];//起点 到 该点最短路径
+int vis[MAXN * 2];//是否该点被加入进最短路径中
+
+struct EDGE
+{
+    int to;
+    int next;
+    int wei;
+}edge[MAXM * 2];/*每条边的数据*/
+
+void add(int u, int v, int w)//创建边 的函数
+{
+    cnt++;
+    edge[cnt].to = v;
+    edge[cnt].wei = w;
+    edge[cnt].next = head[u];
+    head[u] = cnt;
+}
+
+void dij(int s)//求 s 到 各个点 的最短路径
+{
+    priority_queue<pair<int, int> >que;//距离， 点号
+
+    que.push({ 0, s });
+
+    while (!que.empty())
+    {
+        int h = que.top().first;//距离
+        int ph = que.top().second;//点
+        que.pop();
+
+        if (vis[ph] == 0)
+        {
+            vis[ph] = 1;/*到这里才等于1啊！！！！！！！！！！！！！！！！，其他地方都不可将其置为1*/
+            for (int i = head[ph]; i != 0; i = edge[i].next)
+            {
+                if (ans[edge[i].to] > ans[ph] + edge[i].wei)
+                {
+                    ans[edge[i].to] = ans[ph] + edge[i].wei;
+
+                    if (vis[edge[i].to] == 0)
+                    {
+                        que.push({ - ans[edge[i].to], edge[i].to});
+                    }
+                }
+            }
+        }
+    }
+}
 
 int main()
 {
     int n, m;
     cin >> n >> m;
+    int i;
 
-    int i, j;
     for (i = 1; i <= n; i++)
     {
-        for (j = 1; j <= n; j++)
-        {
-            if (i == j)
-                board[i][j] = 0;
-            else
-                board[i][j] = INT_MAX;
-        }
+        ans[i] = INT_MAX;
     }
+    ans[1] = 0;
 
     int u, v, w;
     for (i = 1; i <= m; i++)
     {
         cin >> u >> v >> w;
-        if (w < board[u][v])
-            board[u][v] = w;
+        add(u, v, w);
+        add(v + n, u + n, w);//建反边！！！！！！！！！！重点
     }
 
-    int k;
-    for (k = 1; k <= n; k++)
-    {
-        for (i = 1; i <= n; i++)
-        {
-            if (i == k)
-                continue;
-            for (j = 1; j <= n; j++)
-            {
-                if (j == k)
-                    continue;
-
-                if (i == j)
-                    continue;
-
-                if (board[i][k] != INT_MAX && board[k][j] != INT_MAX)
-                {
-                    if (board[i][k] + board[k][j] < board[i][j])
-                        board[i][j] = board[i][k] + board[k][j];
-                }
-            }
-        }
-    }
-
+    dij(1);
     int sum = 0;
     for (i = 2; i <= n; i++)
+        sum += ans[i];
+
+    memset(vis, 0, sizeof vis);
+    for (i = 1 + n; i <= n + n; i++)
     {
-        sum += board[i][1] + board[1][i];
+        ans[i] = INT_MAX;
     }
+    ans[1 + n] = 0;
+
+    dij(1 + n);
+    for (i = 2 + n; i <= n + n; i++)
+        sum += ans[i];
+
     cout << sum << endl;
     return 0;
 }
