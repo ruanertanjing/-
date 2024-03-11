@@ -176,44 +176,272 @@
 //    return 0;
 //}
 
+//
+//#include <limits.h>
+//
+//int a[200005] = { 0 };
+//int maxSubArray(int* nums, int numsSize)
+//{
+//    int dp[100005] = { 0 };
+//    int i;
+//
+//    dp[0] = nums[0];
+//
+//    for (i = 1; i < numsSize; i++)
+//    {
+//        dp[i] = dp[i - 1] + nums[i] > nums[i] ? dp[i - 1] + nums[i] : nums[i];
+//    }
+//
+//    int max = INT_MIN;
+//
+//    for (i = 0; i < numsSize; i++)
+//    {
+//        if (dp[i] > max)
+//            max = dp[i];
+//    }
+//
+//    return max;
+//}
+//
+//
+//int main()
+//{
+//    int n;
+//    scanf("%d", &n);
+//    int i;
+//    for (i = 0; i < n; i++)
+//        scanf("%d", &a[i]);
+//
+//    printf("%d\n", maxSubArray(a, n));
+//    return 0;
+//}
 
-#include <limits.h>
 
-int a[200005] = { 0 };
-int maxSubArray(int* nums, int numsSize)
+////6. 携带研究材料（第六期模拟笔试）
+////https://kamacoder.com/problempage.php?pid=1046
+//
+///*01背包做法*/
+//
+///*法一：二维数组*/
+//物品，背包顺序可调换，遍历顺序也可由前到后或者由后到前
+//但是一般都是顺序，物品为外循环(i),背包为内循环(j)
+///*dp[i][j]:在0到i的物品里面任意取，且所剩空间大小为j，则能携带的最大价值*/
+//dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - room[i]] + value[i]);
+//
+///*
+//3 4 
+//1 3 4
+//15 20 30
+//*/
+//
+//int value[5005];//价值
+//int room[5005];//所占空间
+//
+//int dp[5005][5005] = { 0 };
+//
+//int max(int a, int b)
+//{
+//    return a > b ? a : b;
+//}
+//
+//int main()
+//{
+//    int m, n, i, j;
+//    scanf("%d%d", &m, &n);
+//
+//    for (i = 0; i < m; i++)
+//        scanf("%d", &room[i]);
+//
+//    for (i = 0; i < m; i++)
+//        scanf("%d", &value[i]);
+//
+//
+//    //初始化
+//     注意价值为负的情况
+//    for (i = 0; i < m; i++)
+//    {
+//        for (j = 0; j <= n; j++)
+//        {
+//            dp[i][0] = 0;
+//
+//            if (i == 0)
+//            {
+//                if (j < room[0])
+//                    dp[i][j] = 0;
+//                else
+//                    dp[i][j] = value[0];
+//            }
+//        }
+//    }
+//
+//    //遍历
+//    for (i = 1; i < m; i++)//遍历物品
+//    {
+//        for (j = 1; j <= n; j++)//遍历背包
+//        {
+//            if (j < room[i])/*不能少！！！！！！！！！！！！*/
+//                dp[i][j] = dp[i - 1][j];
+//            else
+//                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - room[i]] + value[i]);
+//        }
+//    }
+//
+//    printf("%d\n", dp[m - 1][n]);
+//
+//    //printf("\n");
+//
+//    /*发现答案不对就打印数组*/
+//    //for (i = 0; i < m; i++)
+//    //{
+//    //    for (j = 0; j <= n; j++)
+//    //    {
+//    //        printf("%d ", dp[i][j]);
+//    //    }
+//
+//    //    printf("\n");
+//    //}
+//
+//    return 0;
+//}
+//
+//
+///*法二：一维数组*/
+////物品背包顺序不可调换，且背包要倒序遍历，防止重复放入
+//
+////dp[j] = max(dp[j/*注意是j，不是j-1*/], dp[j - room[i]] + value[i])
+//
+////dp[j]:容量为j时可放的最大价值
+//
+//int dp[5005] = { 0 };
+//int room[5005] = { 0 };
+//int value[5005] = { 0 };
+//
+//int max(int a, int b)
+//{
+//    return a > b ? a : b;
+//}
+//
+//int main()
+//{
+//    int m, n, i, j;
+//    scanf("%d%d", &m, &n);
+//
+//    for (i = 0; i < m; i++)
+//        scanf("%d", &room[i]);
+//
+//    for (i = 0; i < m; i++)
+//        scanf("%d", &value[i]);
+//
+//
+//    //初始化
+//    for (j = 0; j <= n; j++)
+//    {
+//        if (j < room[0])
+//            dp[j] = 0;
+//        else
+//            dp[j] = value[0];
+//    }
+//
+//    for (i = 1; i < m; i++)//物品
+//    {
+//        for (j = n; j >= 1; j--/*是-不是+，别根据习惯又写成+，越界访问*/)//背包
+//        {
+//            if (j < room[i])
+//                dp[j] = dp[j];
+//            else
+//                dp[j] = max(dp[j], dp[j - room[i]] + value[i]);
+//        }
+//    }
+//
+//    printf("%d\n", dp[n]);
+//    
+//	return 0;
+//}
+
+
+
+//16. 分割等和子集
+//https://leetcode.cn/problems/partition-equal-subset-sum/
+
+/*法一：回溯：超时，但可以做出来*/
+
+/*法二：01背包：
+物品：每个数
+价值：每个数
+容量：sum/2
+*/
+
+/*二维*/
+
+int dp[205][20005] = { 0 };
+
+int maxm(int a, int b)
 {
-    int dp[100005] = { 0 };
-    int i;
+    return a > b ? a : b;
+}
 
-    dp[0] = nums[0];
+bool canPartition(int* nums, int numsSize)
+{
+    int i, sum = 0, j, maxn = 0;
+    for (i = 0; i < numsSize; i++)
+    {
+        sum += nums[i];
+        if (nums[i] > maxn)
+            maxn = nums[i];
+    }
+
+    if (sum % 2 == 1)
+        return false;
+
+    int target = sum / 2;
+
+    if (maxn > target)
+        return false;
+
+
+
+    for (j = 0; j <= numsSize; j++)
+    {
+        if (j < nums[0])
+            dp[0][j] = 0;
+        else
+            dp[0][j] = nums[0];
+    }
 
     for (i = 1; i < numsSize; i++)
     {
-        dp[i] = dp[i - 1] + nums[i] > nums[i] ? dp[i - 1] + nums[i] : nums[i];
+        for (j = 1; j <= target; j++)
+        {
+            if (j < nums[i])
+                dp[i][j] = dp[i - 1][j];
+            else
+                dp[i][j] = maxm(dp[i - 1][j], dp[i - 1][j - nums[i]] + nums[i]);
+        }
     }
 
-    int max = INT_MIN;
+    //for (i = 0; i < numsSize; i++)
+    //{
+    //    for (j = 0; j <= target; j++)
+    //    {
+    //        printf("%d ", dp[i][j]);
+    //    }
+    //    printf("\n");
+    //}
 
-    for (i = 0; i < numsSize; i++)
-    {
-        if (dp[i] > max)
-            max = dp[i];
-    }
+    if (dp[numsSize - 1][target] == target)
+        return true;
 
-    return max;
+    return false;
 }
-
 
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    int i;
-    for (i = 0; i < n; i++)
-        scanf("%d", &a[i]);
+    int nums[] = { 18,14,16,14,18,15,19,1,1 };
+    int numssize = sizeof(nums) / sizeof(nums[0]);
 
-    printf("%d\n", maxSubArray(a, n));
+    if (canPartition(nums, numssize))
+        printf("true\n");
+    else
+        printf("false\n");
     return 0;
 }
-
-
