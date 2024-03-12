@@ -373,75 +373,185 @@
 
 /*二维*/
 
-int dp[205][20005] = { 0 };
+//int dp[205][20005] = { 0 };
+//
+//int maxm(int a, int b)
+//{
+//    return a > b ? a : b;
+//}
+//
+//bool canPartition(int* nums, int numsSize)
+//{
+//    int i, sum = 0, j, maxn = 0;
+//    for (i = 0; i < numsSize; i++)
+//    {
+//        sum += nums[i];
+//        if (nums[i] > maxn)
+//            maxn = nums[i];
+//    }
+//
+//    if (sum % 2 == 1)
+//        return false;
+//
+//    int target = sum / 2;
+//
+//    if (maxn > target)
+//        return false;
+//
+//
+//
+//    for (j = 0; j <= numsSize; j++)
+//    {
+//        if (j < nums[0])
+//            dp[0][j] = 0;
+//        else
+//            dp[0][j] = nums[0];
+//    }
+//
+//    for (i = 1; i < numsSize; i++)
+//    {
+//        for (j = 1; j <= target; j++)
+//        {
+//            if (j < nums[i])
+//                dp[i][j] = dp[i - 1][j];
+//            else
+//                dp[i][j] = maxm(dp[i - 1][j], dp[i - 1][j - nums[i]] + nums[i]);
+//        }
+//    }
+//
+//    //for (i = 0; i < numsSize; i++)
+//    //{
+//    //    for (j = 0; j <= target; j++)
+//    //    {
+//    //        printf("%d ", dp[i][j]);
+//    //    }
+//    //    printf("\n");
+//    //}
+//
+//    if (dp[numsSize - 1][target] == target)
+//        return true;
+//
+//    return false;
+//}
 
-int maxm(int a, int b)
-{
-    return a > b ? a : b;
-}
+///*一维*/
+//// /*dp[j]:第j个位置能构成的最大和
+//// dp[j] == j :第
+//// */
+////2,2,3,5
+//
+//int max(int a, int b)
+//{
+//    return a > b ? a : b;
+//}
+//
+//bool canPartition(int* nums, int numsSize)
+//{
+//    int i, sum = 0, maxn = 0;
+//    for (i = 0; i < numsSize; i++)
+//    {
+//        sum += nums[i];
+//        if (nums[i] > maxn)
+//        {
+//            maxn = nums[i];
+//        }
+//    }
+//
+//    if (sum % 2 == 1)
+//        return false;
+//
+//    int target = sum / 2;
+//
+//    if (maxn > target)
+//        return false;
+//
+//    int dp[20005] = { 0 };
+//
+//    int j;
+//    for (j = 0; j <= target; j++)
+//    {
+//        if (j < nums[0])
+//            dp[j] = 0;
+//        else
+//            dp[j] = nums[0];
+//    }
+//
+//    for (i = 1; i < numsSize; i++)
+//    {
+//        for (j = target; j >= 1; j--)
+//        {
+//            if (j < nums[i])
+//                dp[j] = dp[j];
+//            else
+//                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+//        }
+//    }
+//
+//    if (dp[target] == target)
+//        return true;
+//
+//    return false;
+//
+//}
+//
+//int main()
+//{
+//    int nums[] = { 2,2,3,5 };
+//    int numssize = sizeof(nums) / sizeof(nums[0]);
+//
+//    if (canPartition(nums, numssize))
+//        printf("true\n");
+//    else
+//        printf("false\n");
+//    return 0;
+//}
 
-bool canPartition(int* nums, int numsSize)
-{
-    int i, sum = 0, j, maxn = 0;
-    for (i = 0; i < numsSize; i++)
-    {
-        sum += nums[i];
-        if (nums[i] > maxn)
-            maxn = nums[i];
-    }
 
-    if (sum % 2 == 1)
-        return false;
-
-    int target = sum / 2;
-
-    if (maxn > target)
-        return false;
-
-
-
-    for (j = 0; j <= numsSize; j++)
-    {
-        if (j < nums[0])
-            dp[0][j] = 0;
-        else
-            dp[0][j] = nums[0];
-    }
-
-    for (i = 1; i < numsSize; i++)
-    {
-        for (j = 1; j <= target; j++)
-        {
-            if (j < nums[i])
-                dp[i][j] = dp[i - 1][j];
-            else
-                dp[i][j] = maxm(dp[i - 1][j], dp[i - 1][j - nums[i]] + nums[i]);
-        }
-    }
-
-    //for (i = 0; i < numsSize; i++)
-    //{
-    //    for (j = 0; j <= target; j++)
-    //    {
-    //        printf("%d ", dp[i][j]);
-    //    }
-    //    printf("\n");
-    //}
-
-    if (dp[numsSize - 1][target] == target)
-        return true;
-
-    return false;
-}
-
-int main()
-{
-    int nums[] = { 18,14,16,14,18,15,19,1,1 };
-    int numssize = sizeof(nums) / sizeof(nums[0]);
-
-    if (canPartition(nums, numssize))
-        printf("true\n");
-    else
-        printf("false\n");
-    return 0;
-}
+////52. 携带研究材料（第七期模拟笔试）
+////https://kamacoder.com/problempage.php?pid=1052
+//
+////多重背包
+////与01背包的区别就是：遍历背包和物品的内外循环都可交换，且从前往后遍历
+//
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include<stdio.h>
+//#include<math.h>
+//#include<string.h>
+//#define ll long long
+//
+//
+//int w[10005] = { 0 };
+//int v[10005] = { 0 };
+//
+//int max(int a, int b)
+//{
+//    return a > b ? a : b;
+//}
+//
+//int main()
+//{
+//    int N, V;
+//    scanf("%d%d", &N, &V);
+//
+//    int i, j;
+//    for (i = 0; i < N; i++)
+//    {
+//        scanf("%d", &w[i]);
+//    }
+//    for (i = 0; i < N; i++)
+//    {
+//        scanf("%d", &v[i]);
+//    }
+//
+//    int dp[10005] = { 0 };
+//    for (i = 0; i < N; i++)//物品
+//    {
+//        for (j = w[i]; j <= V; j++)//背包
+//        {
+//            dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+//        }
+//    }
+//
+//    printf("%d\n", dp[N]);
+//    return 0;
+//}
