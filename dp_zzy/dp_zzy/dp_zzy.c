@@ -1,9 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-#define ll long long
-#include<stdio.h>
-#include<math.h>
-#include<string.h>
-#include<stdbool.h>/**/
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#define ll long long
+//#include<stdio.h>
+//#include<math.h>
+//#include<string.h>
+//#include<stdbool.h>/**/
 
 //动态规划五部曲：dp数组，下标含义；公式；遍历顺序；初始化；打印数组
 
@@ -554,4 +554,68 @@
 //
 //    printf("%d\n", dp[N]);
 //    return 0;
+//}
+
+
+
+////P1216 [USACO1.5] [IOI1994]数字三角形 Number Triangles
+////https://www.luogu.com.cn/problem/P1216
+//
+////回溯是暴搜，很可能超时
+//
+//#include <limits.h>
+//
+//int max(int a, int b)
+//{
+//	return a > b ? a : b;
+//}
+//
+//int v[1000][1005] = { 0 };
+//
+////确定dp[i][j]的含义
+//int dp[1000][1005] = { 0 };//存到该点的最大路径和
+//
+//int main()
+//{
+//	int r;
+//	scanf("%d", &r);
+//	int i, j;
+//
+//	for (i = 0; i < r; i++)
+//	{
+//		for (j = 0; j < i + 1; j++)//第I行有i个元素
+//		{
+//			scanf("%d", &v[i][j]);
+//		}
+//	}
+//
+//
+//	////确定dp[i][j]的含义
+//	//int dp[1000][1005] = { 0 };//存到该点的最大路径和
+//
+//	//递推公式：dp[i][j] = max(dp[i-1][j], dp[i-1][j-1])
+//	//注意第一行和第一列要初始化
+//
+//	//初始化
+//	dp[0][0] = v[0][0];
+//	for (i = 1; i < r; i++)
+//		dp[i][0] = dp[i - 1][0] + v[i][0];
+//
+//	//遍历顺序:从上到下，从左到右
+//	for (i = 1; i < r; i++)
+//	{
+//		for (j = 1; j < i + 1; j++)
+//		{
+//			dp[i][j] = max(dp[i - 1][j] + v[i][j], dp[i - 1][j - 1] + v[i][j]);
+//		}
+//	}
+//
+//	int maxn = INT_MIN;
+//	for (j = 0; j < r; j++)
+//	{
+//		if (dp[r - 1][j] > maxn)
+//			maxn = dp[r - 1][j];
+//	}
+//	printf("%d\n", maxn);
+//	return 0;
 //}
