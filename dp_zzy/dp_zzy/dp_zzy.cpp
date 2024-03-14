@@ -601,3 +601,198 @@ using namespace std;
 //	cout << dp[n] << endl;
 //	return 0;
 //}
+
+										/*模板*/
+
+//01背包
+//二维写法：比较的时j和元素谁大，
+//元素大：说明物品放不下，因此dp[i][j] = dp[i - 1][j]
+//物品大或者相等：比较dp[i-1][j]和dp[i-1][j-w[i]]+v[i]
+
+const int N;
+const int S;
+int dp[N][S];//N:物品的数量，S：背包的大小
+//dp[i][j]:从1~i个物品中取，当容量为j时，能放入的最多物品数量
+int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+
+int main()
+{
+	int n;//物品的数量
+	cin >> n;
+	
+	int i, j;
+	for (i = 0; i < n; i++)
+		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+
+	//初始化:初始化第一行
+	for (j = w[0]; j <= S; j++)
+		dp[0][j] = v[0];
+
+	for (i = 1/**/; i < n; i++)//物品
+	{
+		for (j = 1/**/; j <= S; j++)//容量
+		{
+			if (j < w[i])
+				dp[i][j] = dp[i - 1][j];
+			else
+				dp[j] = max(dp[i-1][j], dp[i][j - w[i]] + v[i]);
+		}
+	}
+
+	cout << dp[n - 1][S] << endl;
+	return 0;
+}
+
+//一维数组
+
+const int N;//N:物品的数量
+const int S;
+int dp[[S];//S：背包的大小
+//dp[j]:当容量为j时，能放入的最多物品数量
+int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+
+int main()
+{
+	int n;//物品的数量
+	cin >> n;
+
+	int i, j;
+	for (i = 0; i < n; i++)
+		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+
+	for (i = 0; i < n; i++)//物品
+	{
+		for (j = S; j >= w[i]; j--)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+		{
+			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+		}
+	}
+
+	cout << dp[S] << endl;
+	return 0;
+}
+
+
+//完全背包
+//概念与01背包的区别：物品有	无限多个
+//代码与01背包的区别：j可顺序可逆序
+
+//一维数组
+
+const int N;//N:物品的数量
+const int S;
+int dp [[S];//S：背包的大小
+//dp[j]:当容量为j时，能放入的最多物品数量
+int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+
+int main()
+{
+	int n;//物品的数量
+	cin >> n;
+
+	int i, j;
+	for (i = 0; i < n; i++)
+		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+
+	for (i = 0; i < n; i++)//物品
+	{
+		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+		{
+			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+		}
+	}
+
+	cout << dp[S] << endl;
+	return 0;
+}
+
+
+//多重背包
+//概念与01背包的区别：第i种物品		最多	有M[i]个
+//代码与01背包的区别：多了一层循环：每次循环M[i]次
+
+const int N;//N:物品的数量
+const int S;
+int dp [[S];//S：背包的大小
+//dp[j]:当容量为j时，能放入的最多物品数量
+int w[N], v[N], m[N];//w:每个物品的重量，v：每个物品的价值
+
+int main()
+{
+	int n;//物品的数量
+	cin >> n;
+
+	int i, j, k/**/;
+	for (i = 0; i < n; i++)
+		cin >> w[i] >> v[i] >> m[i];//注意题目要求的输入顺序
+
+	for (i = 0; i < n; i++)//物品
+	{
+		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+		{
+			for (k = 1/*必须从1开始*/; k <= m[i] && j - k * w[i] >= 0/**/; k++)
+			{
+				dp[j] = max(dp[j], dp[j - k * w[i]/**/] +/**/ k * v[i]);
+			}
+		}
+	}
+
+	cout << dp[S] << endl;
+	return 0;
+}
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>/*max,sort函数所在头文件*/
+#include <cstring>
+
+#define quickio ios::sync_with_stdio,cin.tie(0),cout.tie(0);
+
+using namespace std;
+//最长公共子序列:不要连续-----LCS
+//最长公共子串：要连续
+
+//模板题
+//i:遍历s1的字母
+//j:遍历s2的字母
+//dp[i][j]到i,j这个位置时的最长公共子序列：
+//若s1[i-1] = s2[j-1]:dp[i][j] = dp[i-1][j-1]+1------>i,j要从1开始
+//else:max(dp[i-1][j], dp[i][j-1])
+
+//dp[i][j]:到该位置时最长的公共子序列
+
+#include <cstring>
+
+const int R = 1005;//行
+const int C = 1005;//列
+int dp[R][C];
+
+int main()
+{
+	quickio;
+
+	string s1;
+	string s2;
+	int i, j, len1, len2;
+	while (cin >> s1 >> s2)
+	{
+		len1 = s1.size();
+		len2 = s2.size();
+
+		for (i = 1/**/; i <= len1; i++)
+		{
+			for (j = 1/**/; j <= len2; j++)
+			{
+				if (s1[i - 1] == s2[j - 1])
+					dp[i][j] = dp[i - 1][j - 1] + 1;
+				else
+					dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+			}
+		}
+
+		cout << dp[len1][len2] << endl;
+	}
+
+	return 0;
+}
