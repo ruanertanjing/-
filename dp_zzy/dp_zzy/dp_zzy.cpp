@@ -447,59 +447,59 @@ using namespace std;
 //}
 
 
-//P1095 [NOIP2007 普及组] 守望者的逃离
-//https://www.luogu.com.cn/problem/P1095
-
-//逃出的条件：剩余时间内走的距离 > S
-
-//恢复要3秒，不用技能3秒走51，用技能三秒走34+60
-//能闪就闪，同时比较闪和原速度哪个快----->>贪心的思路
-
-/*
-题解：https://blog.csdn.net/qq_35855297/article/details/52331942?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522171033739316800215075491%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=171033739316800215075491&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-52331942-null-null.142^v99^pc_search_result_base3&utm_term=%E5%AE%88%E6%9C%9B%E8%80%85%E7%9A%84%E9%80%83%E7%A6%BB&spm=1018.2226.3001.4187
-*/
-
-//法一：动态规划
-//先全闪，再进行一次循环，比较同一时间时s+=17和dp[i]的大小
-
-const int MAX = 3e5 + 5;
-int dp[MAX];
-
-int main()
-{
-	int M, S, T;
-	cin >> M >> S >> T;
-
-	int i, sum;
-	for (i = 1; i <= T; i++)//时间
-	{
-		if (M >= 10)
-		{
-			dp[i] = dp[i - 1] + 60;
-			M -= 10;
-		}
-		else
-		{
-			M += 4;
-			dp[i] = dp[i - 1];
-		}
-	}
-
-	for (i = 1; i <= T; i++)
-	{
-		dp[i] = max(dp[i], dp[i-1] + 17);
-		if (dp[i] >= S)
-		{
-			cout << "Yes" << endl;
-			cout << i << endl;
-			return 0;
-		}
-	}
-	cout << "No" << endl;
-	cout << dp[T] << endl;
-	
-	return 0;
-}
+////P1095 [NOIP2007 普及组] 守望者的逃离
+////https://www.luogu.com.cn/problem/P1095
+//
+////逃出的条件：剩余时间内走的距离 > S
+//
+////恢复要3秒，不用技能3秒走51，用技能三秒走34+60
+////能闪就闪，同时比较闪和原速度哪个快----->>贪心的思路
+//
+///*
+//题解：https://blog.csdn.net/qq_35855297/article/details/52331942?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522171033739316800215075491%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=171033739316800215075491&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-52331942-null-null.142^v99^pc_search_result_base3&utm_term=%E5%AE%88%E6%9C%9B%E8%80%85%E7%9A%84%E9%80%83%E7%A6%BB&spm=1018.2226.3001.4187
+//*/
+//
+////法一：动态规划
+////先全闪，再进行一次循环，比较同一时间时s+=17和dp[i]的大小
+//
+//const int MAX = 3e5 + 5;
+//int dp[MAX];
+//
+//int main()
+//{
+//	int M, S, T;
+//	cin >> M >> S >> T;
+//
+//	int i, sum;
+//	for (i = 1; i <= T; i++)//时间
+//	{
+//		if (M >= 10)
+//		{
+//			dp[i] = dp[i - 1] + 60;
+//			M -= 10;
+//		}
+//		else
+//		{
+//			M += 4;
+//			dp[i] = dp[i - 1];
+//		}
+//	}
+//
+//	for (i = 1; i <= T; i++)
+//	{
+//		dp[i] = max(dp[i], dp[i-1] + 17);
+//		if (dp[i] >= S)
+//		{
+//			cout << "Yes" << endl;
+//			cout << i << endl;
+//			return 0;
+//		}
+//	}
+//	cout << "No" << endl;
+//	cout << dp[T] << endl;
+//	
+//	return 0;
+//}
 
 
 //法二：贪心
@@ -532,5 +532,72 @@ int main()
 //		}
 //	}
 //	cout << "No" << endl << a << endl;
+//	return 0;
+//}
+
+//
+////F - 递推-A+B Problem
+//
+//int main()
+//{
+//
+//	return 0;
+//}
+
+
+//G - 递推-天天AK的周大人
+
+//const int MAX = 1e6 + 5;
+//int a[MAX] = { 0 }, b[MAX];
+//
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//	int i;
+//
+//	for (i = 0; i < n; i++)
+//	{
+//		cin >> a[i] >> b[i];
+//	}
+//
+//
+//	return 0;
+//}
+
+
+////Cut Ribbon
+////https://www.luogu.com.cn/problem/CF189A
+//
+////完全  背包问题
+////一长度为n的缎带，要求将其剪成若干长度为a,b,c的缎带，且缎带数量尽可能多。
+////一容量为n的背包，有体积为a, b, c的三个物体，请问怎么放使得价值最大
+//
+////完全背包问题和01背包的区别：完全背包遍历物品时可以顺序也可以逆序
+//
+//#include <cstring>
+//
+//int main()
+//{
+//	int n, v[3];
+//	cin >> n >> v[0] >> v[1] >> v[2];//a, b, c
+//	int i, j;
+//
+//	int dp[4005] = { 0 };//容量为i时存可放的最大数量
+//	memset(dp, -1, sizeof(dp));//cstring头文件
+//
+//	dp[0] = 0;//容量为1的背包最多放0个
+//	/**/
+//
+//	for (i = 0; i < 3; i++)//物品：a, b, c
+//	{
+//		for (j = v[i]; j <= n; j++)//背包
+//		{
+//			if (dp[j - v[i]] != -1)/**/
+//				dp[j] = max(dp[j], dp[j - v[i]] + 1);
+//		}
+//	}
+//
+//	cout << dp[n] << endl;
 //	return 0;
 //}
