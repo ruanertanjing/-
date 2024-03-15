@@ -535,17 +535,193 @@ using namespace std;
 //	return 0;
 //}
 
+
+//P1832 A+B Problem（再升级）
+//https://www.luogu.com.cn/problem/P1832
+
+///*法一：普通动态规划*/
+////需要先把素数求出来（欧拉筛），再计算总数：一般计算总数都是两dp相加得到新的dp答案
 //
-////F - 递推-A+B Problem
+////欧拉筛：要book[MAX]:记录哪些不是素数，要prime[MAX]:记录素数，h:记录素数的个数
+//
+//int prime[1005], book[1005], h = 0;
+//
+//void isprime(int max)//max:最大记录到哪
+//{
+//	book[0] = 1;
+//	book[1] = 1;
+//
+//	int i, j;
+//	for (i = 2; i <= max; i++)//遍历数，所以从2开始
+//	{
+//		if (book[i] == 0)
+//			prime[h++] = i;
+//
+//		for (j = 0; j < h; j++)
+//		{
+//			if (prime[j] * i <= max)
+//				book[prime[j] * i] = 1;
+//			else
+//				break;
+//
+//			if (i % prime[j] == 0)
+//				break;
+//		}
+//
+//	}
+//}
 //
 //int main()
 //{
+//	quickio;
+//	int n;
+//	cin >> n;
 //
+//	if (n == 0 || n == 1)
+//	{
+//		cout << 0 << endl;
+//		return 0;
+//	}
+//	//求素数
+//	isprime(n);
+//
+//	int dp[1005] = { 0 }, i, j;//dp:记录每个数的方案总数
+//	for (i = 2; i <= n; i++)//遍历每个数
+//	{
+//		for (j = 0; j < h && prime[j] < i; j++)//遍历每个素数
+//		{
+//			if (book[i - prime[j]] == 0)//若该数减去素数=0：说明该数由两个素数组成
+//				dp[i] += dp[i - prime[j]] + dp[prime[j]];
+//		}
+//	}
+//
+//	cout << dp[n] << endl;
+//	return 0;
+//}
+
+///*法二：完全背包：把每个素数看成物品，dp[i]的i看成背包，每个物品可以拿无限次*/
+//int prime[1005], book[1005], h = 0;
+//
+//void isprime(int max)//max:最大记录到哪
+//{
+//	book[0] = 1;
+//	book[1] = 1;
+//
+//	int i, j;
+//	for (i = 2; i <= max; i++)//遍历数，所以从2开始
+//	{
+//		if (book[i] == 0)
+//			prime[h++] = i;
+//
+//		for (j = 0; j < h; j++)
+//		{
+//			if (prime[j] * i <= max)
+//				book[prime[j] * i] = 1;
+//			else
+//				break;
+//
+//			if (i % prime[j] == 0)
+//				break;
+//		}
+//
+//	}
+//}
+//
+//int main()
+//{
+//	quickio;
+//	int n;
+//	cin >> n;
+//
+//	if (n == 0 || n == 1)
+//	{
+//		cout << 0 << endl;
+//		return 0;
+//	}
+//
+//	//求素数
+//	isprime(n);
+//
+//	int dp[1005] = { 0 }, i, j;//dp:记录每个数的方案总数
+//	for (i = 0; i < h; i++)//遍历物品（素数）
+//	{
+//		for (j = prime[i]; j <= n; j++)//遍历背包，j:表示数
+//		{
+//			if (book[j - prime[i]] == 0)
+//				dp[j] += dp[j - prime[i]];
+//		}
+//	}
+//	cout << dp[n] << endl;
 //	return 0;
 //}
 
 
-//G - 递推-天天AK的周大人
+////G - 递推-天天AK的周大人
+//
+////无重叠区间问题：435（力扣），贪心
+////线段覆盖
+//
+////#include <map>
+////
+////multimap<int, int>mymap;//因为unordered_map不可排序，multimap和map会排序，而multimap可以出现重复数据
+//
+//#include <vector>
+//
+////vector<vector<int> >vec;
+////
+////bool cmp(vector<int>& a, vector<int>& b)
+////{
+////	return a[0] < b[0];
+////}
+//
+//const int MAX = 1e6 + 5;
+//
+//struct m
+//{
+//	int a;
+//	int b;
+//}x[MAX];
+//
+//bool cmp(struct m x, struct m y)
+//{
+//	return x.a < y.a;
+//}
+//
+//int main()
+//{
+//	int n, i;
+//	cin >> n;
+//
+//	if (n == 0 || n == 1)
+//	{
+//		cout << n << endl;
+//		return 0;
+//	}
+//	int a, b;
+//	for (i = 0; i < n; i++)
+//	{
+//		cin >> x[i].a >> x[i].b;
+//
+//		//vec.push_back({ a,b });
+//		//mymap.insert(pair<int, int>(a, b));/*注意用法*/
+//	}
+//	//sort(vec.begin(), vec.end(), cmp);
+//
+//	sort(x, x + n, cmp);//根据起点排序
+//	int count = 1;
+//	for (i = 1; i < n; i++)
+//	{
+//		if (x[i - 1].b <= x[i].a)/*后面的起点大于等于前面的终点：符合条件*/
+//			count++;
+//		else
+//		{
+//			x[i].b = x[i - 1].b < x[i].b ? x[i - 1].b : x[i].b;/*更换该点的终点，有利于下一次的计算*/
+//		}
+//	}
+//
+//	cout << count << endl;
+//	return 0;
+//}
 
 //const int MAX = 1e6 + 5;
 //int a[MAX] = { 0 }, b[MAX];
@@ -604,195 +780,195 @@ using namespace std;
 
 										/*模板*/
 
-//01背包
-//二维写法：比较的时j和元素谁大，
-//元素大：说明物品放不下，因此dp[i][j] = dp[i - 1][j]
-//物品大或者相等：比较dp[i-1][j]和dp[i-1][j-w[i]]+v[i]
-
-const int N;
-const int S;
-int dp[N][S];//N:物品的数量，S：背包的大小
-//dp[i][j]:从1~i个物品中取，当容量为j时，能放入的最多物品数量
-int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
-
-int main()
-{
-	int n;//物品的数量
-	cin >> n;
-	
-	int i, j;
-	for (i = 0; i < n; i++)
-		cin >> w[i] >> v[i];//注意题目要求的输入顺序
-
-	//初始化:初始化第一行
-	for (j = w[0]; j <= S; j++)
-		dp[0][j] = v[0];
-
-	for (i = 1/**/; i < n; i++)//物品
-	{
-		for (j = 1/**/; j <= S; j++)//容量
-		{
-			if (j < w[i])
-				dp[i][j] = dp[i - 1][j];
-			else
-				dp[j] = max(dp[i-1][j], dp[i][j - w[i]] + v[i]);
-		}
-	}
-
-	cout << dp[n - 1][S] << endl;
-	return 0;
-}
-
-//一维数组
-
-const int N;//N:物品的数量
-const int S;
-int dp[[S];//S：背包的大小
-//dp[j]:当容量为j时，能放入的最多物品数量
-int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
-
-int main()
-{
-	int n;//物品的数量
-	cin >> n;
-
-	int i, j;
-	for (i = 0; i < n; i++)
-		cin >> w[i] >> v[i];//注意题目要求的输入顺序
-
-	for (i = 0; i < n; i++)//物品
-	{
-		for (j = S; j >= w[i]; j--)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
-		{
-			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
-		}
-	}
-
-	cout << dp[S] << endl;
-	return 0;
-}
-
-
-//完全背包
-//概念与01背包的区别：物品有	无限多个
-//代码与01背包的区别：j可顺序可逆序
-
-//一维数组
-
-const int N;//N:物品的数量
-const int S;
-int dp [[S];//S：背包的大小
-//dp[j]:当容量为j时，能放入的最多物品数量
-int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
-
-int main()
-{
-	int n;//物品的数量
-	cin >> n;
-
-	int i, j;
-	for (i = 0; i < n; i++)
-		cin >> w[i] >> v[i];//注意题目要求的输入顺序
-
-	for (i = 0; i < n; i++)//物品
-	{
-		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
-		{
-			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
-		}
-	}
-
-	cout << dp[S] << endl;
-	return 0;
-}
-
-
-//多重背包
-//概念与01背包的区别：第i种物品		最多	有M[i]个
-//代码与01背包的区别：多了一层循环：每次循环M[i]次
-
-const int N;//N:物品的数量
-const int S;
-int dp [[S];//S：背包的大小
-//dp[j]:当容量为j时，能放入的最多物品数量
-int w[N], v[N], m[N];//w:每个物品的重量，v：每个物品的价值
-
-int main()
-{
-	int n;//物品的数量
-	cin >> n;
-
-	int i, j, k/**/;
-	for (i = 0; i < n; i++)
-		cin >> w[i] >> v[i] >> m[i];//注意题目要求的输入顺序
-
-	for (i = 0; i < n; i++)//物品
-	{
-		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
-		{
-			for (k = 1/*必须从1开始*/; k <= m[i] && j - k * w[i] >= 0/**/; k++)
-			{
-				dp[j] = max(dp[j], dp[j - k * w[i]/**/] +/**/ k * v[i]);
-			}
-		}
-	}
-
-	cout << dp[S] << endl;
-	return 0;
-}
-
-
-#include <iostream>
-#include <vector>
-#include <algorithm>/*max,sort函数所在头文件*/
-#include <cstring>
-
-#define quickio ios::sync_with_stdio,cin.tie(0),cout.tie(0);
-
-using namespace std;
-//最长公共子序列:不要连续-----LCS
-//最长公共子串：要连续
-
-//模板题
-//i:遍历s1的字母
-//j:遍历s2的字母
-//dp[i][j]到i,j这个位置时的最长公共子序列：
-//若s1[i-1] = s2[j-1]:dp[i][j] = dp[i-1][j-1]+1------>i,j要从1开始
-//else:max(dp[i-1][j], dp[i][j-1])
-
-//dp[i][j]:到该位置时最长的公共子序列
-
-#include <cstring>
-
-const int R = 1005;//行
-const int C = 1005;//列
-int dp[R][C];
-
-int main()
-{
-	quickio;
-
-	string s1;
-	string s2;
-	int i, j, len1, len2;
-	while (cin >> s1 >> s2)
-	{
-		len1 = s1.size();
-		len2 = s2.size();
-
-		for (i = 1/**/; i <= len1; i++)
-		{
-			for (j = 1/**/; j <= len2; j++)
-			{
-				if (s1[i - 1] == s2[j - 1])
-					dp[i][j] = dp[i - 1][j - 1] + 1;
-				else
-					dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-			}
-		}
-
-		cout << dp[len1][len2] << endl;
-	}
-
-	return 0;
-}
+////01背包
+////二维写法：比较的时j和元素谁大，
+////元素大：说明物品放不下，因此dp[i][j] = dp[i - 1][j]
+////物品大或者相等：比较dp[i-1][j]和dp[i-1][j-w[i]]+v[i]
+//
+//const int N;
+//const int S;
+//int dp[N][S];//N:物品的数量，S：背包的大小
+////dp[i][j]:从1~i个物品中取，当容量为j时，能放入的最多物品数量
+//int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+//
+//int main()
+//{
+//	int n;//物品的数量
+//	cin >> n;
+//	
+//	int i, j;
+//	for (i = 0; i < n; i++)
+//		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+//
+//	//初始化:初始化第一行
+//	for (j = w[0]; j <= S; j++)
+//		dp[0][j] = v[0];
+//
+//	for (i = 1/**/; i < n; i++)//物品
+//	{
+//		for (j = 1/**/; j <= S; j++)//容量
+//		{
+//			if (j < w[i])
+//				dp[i][j] = dp[i - 1][j];
+//			else
+//				dp[j] = max(dp[i-1][j], dp[i][j - w[i]] + v[i]);
+//		}
+//	}
+//
+//	cout << dp[n - 1][S] << endl;
+//	return 0;
+//}
+//
+////一维数组
+//
+//const int N;//N:物品的数量
+//const int S;
+//int dp[[S];//S：背包的大小
+////dp[j]:当容量为j时，能放入的最多物品数量
+//int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+//
+//int main()
+//{
+//	int n;//物品的数量
+//	cin >> n;
+//
+//	int i, j;
+//	for (i = 0; i < n; i++)
+//		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+//
+//	for (i = 0; i < n; i++)//物品
+//	{
+//		for (j = S; j >= w[i]; j--)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+//		{
+//			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+//		}
+//	}
+//
+//	cout << dp[S] << endl;
+//	return 0;
+//}
+//
+//
+////完全背包
+////概念与01背包的区别：物品有	无限多个
+////代码与01背包的区别：j可顺序可逆序
+//
+////一维数组
+//
+//const int N;//N:物品的数量
+//const int S;
+//int dp [[S];//S：背包的大小
+////dp[j]:当容量为j时，能放入的最多物品数量
+//int w[N], v[N];//w:每个物品的重量，v：每个物品的价值
+//
+//int main()
+//{
+//	int n;//物品的数量
+//	cin >> n;
+//
+//	int i, j;
+//	for (i = 0; i < n; i++)
+//		cin >> w[i] >> v[i];//注意题目要求的输入顺序
+//
+//	for (i = 0; i < n; i++)//物品
+//	{
+//		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+//		{
+//			dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+//		}
+//	}
+//
+//	cout << dp[S] << endl;
+//	return 0;
+//}
+//
+//
+////多重背包
+////概念与01背包的区别：第i种物品		最多	有M[i]个
+////代码与01背包的区别：多了一层循环：每次循环M[i]次
+//
+//const int N;//N:物品的数量
+//const int S;
+//int dp [[S];//S：背包的大小
+////dp[j]:当容量为j时，能放入的最多物品数量
+//int w[N], v[N], m[N];//w:每个物品的重量，v：每个物品的价值
+//
+//int main()
+//{
+//	int n;//物品的数量
+//	cin >> n;
+//
+//	int i, j, k/**/;
+//	for (i = 0; i < n; i++)
+//		cin >> w[i] >> v[i] >> m[i];//注意题目要求的输入顺序
+//
+//	for (i = 0; i < n; i++)//物品
+//	{
+//		for (j = w[i]; j <= S; j++)//容量，要注意其遍历顺序为倒序，防止一个物品选多次
+//		{
+//			for (k = 1/*必须从1开始*/; k <= m[i] && j - k * w[i] >= 0/**/; k++)
+//			{
+//				dp[j] = max(dp[j], dp[j - k * w[i]/**/] +/**/ k * v[i]);
+//			}
+//		}
+//	}
+//
+//	cout << dp[S] << endl;
+//	return 0;
+//}
+//
+//
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>/*max,sort函数所在头文件*/
+//#include <cstring>
+//
+//#define quickio ios::sync_with_stdio,cin.tie(0),cout.tie(0);
+//
+//using namespace std;
+////最长公共子序列:不要连续-----LCS
+////最长公共子串：要连续
+//
+////模板题
+////i:遍历s1的字母
+////j:遍历s2的字母
+////dp[i][j]到i,j这个位置时的最长公共子序列：
+////若s1[i-1] = s2[j-1]:dp[i][j] = dp[i-1][j-1]+1------>i,j要从1开始
+////else:max(dp[i-1][j], dp[i][j-1])
+//
+////dp[i][j]:到该位置时最长的公共子序列
+//
+//#include <cstring>
+//
+//const int R = 1005;//行
+//const int C = 1005;//列
+//int dp[R][C];
+//
+//int main()
+//{
+//	quickio;
+//
+//	string s1;
+//	string s2;
+//	int i, j, len1, len2;
+//	while (cin >> s1 >> s2)
+//	{
+//		len1 = s1.size();
+//		len2 = s2.size();
+//
+//		for (i = 1/**/; i <= len1; i++)
+//		{
+//			for (j = 1/**/; j <= len2; j++)
+//			{
+//				if (s1[i - 1] == s2[j - 1])
+//					dp[i][j] = dp[i - 1][j - 1] + 1;
+//				else
+//					dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+//			}
+//		}
+//
+//		cout << dp[len1][len2] << endl;
+//	}
+//
+//	return 0;
+//}
