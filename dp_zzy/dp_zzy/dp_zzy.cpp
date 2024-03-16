@@ -536,70 +536,14 @@ using namespace std;
 //}
 
 
-//P1832 A+B Problem（再升级）
-//https://www.luogu.com.cn/problem/P1832
-
-///*法一：普通动态规划*/
+////P1832 A+B Problem（再升级）
+////https://www.luogu.com.cn/problem/P1832
+//
 ////需要先把素数求出来（欧拉筛），再计算总数：一般计算总数都是两dp相加得到新的dp答案
 //
 ////欧拉筛：要book[MAX]:记录哪些不是素数，要prime[MAX]:记录素数，h:记录素数的个数
 //
-//int prime[1005], book[1005], h = 0;
-//
-//void isprime(int max)//max:最大记录到哪
-//{
-//	book[0] = 1;
-//	book[1] = 1;
-//
-//	int i, j;
-//	for (i = 2; i <= max; i++)//遍历数，所以从2开始
-//	{
-//		if (book[i] == 0)
-//			prime[h++] = i;
-//
-//		for (j = 0; j < h; j++)
-//		{
-//			if (prime[j] * i <= max)
-//				book[prime[j] * i] = 1;
-//			else
-//				break;
-//
-//			if (i % prime[j] == 0)
-//				break;
-//		}
-//
-//	}
-//}
-//
-//int main()
-//{
-//	quickio;
-//	int n;
-//	cin >> n;
-//
-//	if (n == 0 || n == 1)
-//	{
-//		cout << 0 << endl;
-//		return 0;
-//	}
-//	//求素数
-//	isprime(n);
-//
-//	int dp[1005] = { 0 }, i, j;//dp:记录每个数的方案总数
-//	for (i = 2; i <= n; i++)//遍历每个数
-//	{
-//		for (j = 0; j < h && prime[j] < i; j++)//遍历每个素数
-//		{
-//			if (book[i - prime[j]] == 0)//若该数减去素数=0：说明该数由两个素数组成
-//				dp[i] += dp[i - prime[j]] + dp[prime[j]];
-//		}
-//	}
-//
-//	cout << dp[n] << endl;
-//	return 0;
-//}
-
-///*法二：完全背包：把每个素数看成物品，dp[i]的i看成背包，每个物品可以拿无限次*/
+///*完全背包：把每个素数看成物品，dp[i]的i看成背包，每个物品可以拿无限次*/
 //int prime[1005], book[1005], h = 0;
 //
 //void isprime(int max)//max:最大记录到哪
@@ -642,12 +586,14 @@ using namespace std;
 //	//求素数
 //	isprime(n);
 //
-//	int dp[1005] = { 0 }, i, j;//dp:记录每个数的方案总数
-//	for (i = 0; i < h; i++)//遍历物品（素数）
+//	long long/*注意是long long，因为数据可能很大，它求的是总数量*/ dp[1005] = {0}, i, j;//dp:记录每个数的方案总数
+//	dp[0] = 1;//dp[0]值为1：好像不好解释，就理解成，不然单个质数的方案数就不能等于1了；
+//	什么也不取也是一种方案
+// for (i = 0; i < h; i++)//遍历物品（素数）
 //	{
 //		for (j = prime[i]; j <= n; j++)//遍历背包，j:表示数
 //		{
-//			if (book[j - prime[i]] == 0)
+//			//if (book[j - prime[i]] == 0)：因为虽然不是素数，也可以用素数构成
 //				dp[j] += dp[j - prime[i]];
 //		}
 //	}
@@ -972,3 +918,142 @@ using namespace std;
 //
 //	return 0;
 //}
+
+////ACboy needs your help
+////https://acm.hdu.edu.cn/showproblem.php?pid=1712
+////分组背包：给你N组物品，然后每一组你至多选择一个物品(也可以不选),
+////每个物品都有自己的体积和价值，现在给你一个容量为M的背包，让你用这个背包装物品，使得物品价值总和最大.
+//
+////实际上是把每组看成一个01背包
+///*
+//讲解：https://www.bilibili.com/video/BV1eT41157xt/?spm_id_from=333.337.search-card.all.click&vd_source=41fa3a36a9ab4fa3fc7b5ff1c034346c
+//*/
+///*
+//博客：https://blog.csdn.net/TheWayForDream/article/details/116567088?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522171056305416800182147113%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=171056305416800182147113&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-116567088-null-null.142^v99^pc_search_result_base3&utm_term=%E5%88%86%E7%BB%84%E8%83%8C%E5%8C%85&spm=1018.2226.3001.4187
+//*/
+//
+//const int N = 105;
+//const int M = 105;
+//int A[N][M];
+//
+//int main()
+//{
+//	quickio;
+//	int n, m;
+//	while (cin >> n >> m)//不可判断n, m是否为0，只可判断是否到文件尾了
+//	{
+//		if (n == 0 && m == 0)
+//			break;
+//		int i, j, k;
+//		for (i = 1; i <= n; i++)
+//		{
+//			for (j = 1; j <= m; j++)
+//			{
+//				cin >> A[i][j];
+//			}
+//		}
+//
+//		int dp[105] = { 0 };
+//		for (i = 1; i <= n; i++)//物品
+//		{
+//			for (j = m; j >= 0; j--)//背包容量
+//			{
+//				for (k = 1; k <= m && k <= j; k++)//第i组的第k个物品
+//				{
+//					dp[j] = max(dp[j], dp[j - k] + A[i][k]);
+//				}
+//			}
+//		}
+//
+//		cout << dp[m] << endl;
+//	}
+//	return 0;
+//}
+
+
+////P1441 砝码称重
+////https://www.luogu.com.cn/problem/P1441
+////多重背包
+//
+//
+//int w[6] = { 1, 2, 3, 5, 10, 20 };
+//int a[6];//砝码个数
+//
+//int main()
+//{
+//	quickio;
+//	int i, j, k;
+//
+//	for (i = 0; i < 6; i++)
+//	{
+//		cin >> a[i];
+//	}
+//
+//	int book[1005] = { 0 }, count = 0;
+//	book[0] = 1;/*注意！！！！！！！11*/
+//	for (i = 0; i < 6; i++)//物品
+//	{
+//		for (j = 1000; j >= 0; j--)//注意是逆序，防止前面的数据改变后面的数据
+//		{
+//			for (k = 1; k <= a[i]; k++)
+//			{
+//				if (book[j] == 1)
+//				{
+//					book[j + k * w[i]] = 1;
+//				}
+//			}
+//		}
+//	}
+//
+//	for (j = 1/*注意从1开始*/; j <= 1000; j++)
+//	{
+//		if (book[j] == 1)
+//			count++;
+//	}
+//	cout << "Total=" << count << endl;
+//	return 0;
+//}
+
+
+//最少拦截系统
+//https://acm.hdu.edu.cn/showproblem.php?pid=1257
+
+//最长递减子序列
+//注意：dp数组最开始都初始化为1
+
+int main()
+{
+	int num, h[100000] = { 0 }, i;
+
+	while (cin >> num)
+	{
+		int count = 0;
+		for (i = 0; i < num; i++)
+		{
+			cin >> h[i];
+		}
+
+		int dp[10000] = { 0 };//最长递减子序列
+		for (i = 0; i < num; i++)
+			dp[i] = 1;
+		int i, j;
+
+		for (i = 1; i < num; i++)
+		{
+			for (j = 0; j < i; j++)
+			{
+				if (h[j] > h[i])
+					dp[i] = max(dp[j] + 1, dp[i]);/**/
+			}
+
+		}
+
+		for (i = 0; i < num; i++)
+		{
+			if (dp[i] == 1)
+				count++;
+		}
+		cout << count << endl;
+	}
+	return 0;
+}
