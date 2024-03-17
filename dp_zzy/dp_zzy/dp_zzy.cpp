@@ -1015,45 +1015,150 @@ using namespace std;
 //}
 
 
-//最少拦截系统
-//https://acm.hdu.edu.cn/showproblem.php?pid=1257
+////最少拦截系统
+////https://acm.hdu.edu.cn/showproblem.php?pid=1257
+//
+////最长递减子序列
+////注意：dp数组最开始都初始化为1
+//
+//int main()
+//{
+//	int num, h[100000] = { 0 }, i;
+//
+//	while (cin >> num)
+//	{
+//		int count = 0;
+//		for (i = 0; i < num; i++)
+//		{
+//			cin >> h[i];
+//		}
+//
+//		int dp[10000] = { 0 };//最长递减子序列
+//		for (i = 0; i < num; i++)
+//			dp[i] = 1;
+//		int i, j;
+//
+//		for (i = 1; i < num; i++)
+//		{
+//			for (j = 0; j < i; j++)
+//			{
+//				if (h[j] > h[i])
+//					dp[i] = max(dp[j] + 1, dp[i]);/**/
+//			}
+//
+//		}
+//
+//		for (i = 0; i < num; i++)
+//		{
+//			if (dp[i] == 1)
+//				count++;
+//		}
+//		cout << count << endl;
+//	}
+//	return 0;
+//}
 
-//最长递减子序列
-//注意：dp数组最开始都初始化为1
+
+//class相当于结构体
+
+//
+
+//class Solution {//Solution
+//public:
+//    void test(vector<int>& nums)
+//    {
+//        lengthOfLIS(nums);
+//    }
+//private:
+//    //protect
+//    int lengthOfLIS(vector<int>& nums)
+//    {
+//        if (nums.size() == 0)
+//            return 0;
+//
+//        vector<int>dp(nums.size(), 1);
+//
+//        int i, j;
+//        int maxn = 1;
+//        for (i = 0; i < nums.size(); i++)
+//        {
+//            for (j = 0; j < i; j++)
+//            {
+//                if (nums[j] < nums[i])
+//                    dp[i] = max(dp[j] + 1, dp[i]);
+//            }
+//            if (dp[i] > maxn)
+//                maxn = dp[i];
+//        }
+//        return maxn;
+//    }
+//};
+//
+//class Solution2 {//Solution
+//    //public:
+//public:
+//    //protect
+//    int lengthOfLIS(vector<int>& nums)
+//    {
+//        if (nums.size() == 0)
+//            return 0;
+//
+//        vector<int>dp(nums.size(), 1);
+//
+//        int i, j;
+//        int maxn = 1;
+//        for (i = 0; i < nums.size(); i++)
+//        {
+//            for (j = 0; j < i; j++)
+//            {
+//                if (nums[j] < nums[i])
+//                    dp[i] = max(dp[j] + 1, dp[i]);
+//            }
+//            if (dp[i] > maxn)
+//                maxn = dp[i];
+//        }
+//        return maxn;
+//    }
+//};
+//
+//int main()
+//{
+//    Solution a;//soulution:类，a就是类创建的对象
+//    Solution2 g;
+//    vector<int> b;//相当于c中的数组，int类型的一维数组
+//    //vector<vector<int>>c//相当于c中的数组，int类型的二维维数组
+//    a.lengthOfLIS(b);
+//    g.lengthOfLIS(b);
+////    lengthOfLIS(b);
+//    return 0;
+//}
+
+//你只能写，不能读
+class STU
+{
+public:
+	void test(int age, int tele)
+	{
+		fun(age, tele);
+	}
+private:
+	int m_age;//m_age
+	int m_tele;
+	void fun(int age, int tele)
+	{
+		m_age = age;
+		m_tele = tele;
+		/*
+		cout << m_age << endl;
+		cout << m_tele << endl;
+		*/
+	}
+};
 
 int main()
 {
-	int num, h[100000] = { 0 }, i;
-
-	while (cin >> num)
-	{
-		int count = 0;
-		for (i = 0; i < num; i++)
-		{
-			cin >> h[i];
-		}
-
-		int dp[10000] = { 0 };//最长递减子序列
-		for (i = 0; i < num; i++)
-			dp[i] = 1;
-		int i, j;
-
-		for (i = 1; i < num; i++)
-		{
-			for (j = 0; j < i; j++)
-			{
-				if (h[j] > h[i])
-					dp[i] = max(dp[j] + 1, dp[i]);/**/
-			}
-
-		}
-
-		for (i = 0; i < num; i++)
-		{
-			if (dp[i] == 1)
-				count++;
-		}
-		cout << count << endl;
-	}
+	STU stu1;
+	stu1.test(18, 10086);
+	cout << stu1.m_age << endl;
 	return 0;
 }
