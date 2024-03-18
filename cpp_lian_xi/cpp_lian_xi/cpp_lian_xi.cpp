@@ -55,25 +55,36 @@ using namespace std;
 //}
 
 
-//静态成员变量
+////静态成员变量
+//
+//class Person
+//{
+//public:
+//	static int m;
+//};
+//
+//int Person::m = 1;
+//
+//void test()
+//{
+//	Person p;
+//	
+//	cout << p.m << endl;
+//}
+//
+//int main()
+//{
+//	test();
+//	return 0;
+//}
 
-class Person
-{
-public:
-	static int m;
-};
-
-int Person::m = 1;
-
-void test()
-{
-	Person p;
-	
-	cout << p.m << endl;
-}
 
 int main()
 {
-	test();
+	string s = "abcfsfaggse";
+	int pos1 = s.find("ag");
+	int pos2 = s.rfind("ag");
+
+	cout << pos1 << endl << pos2 << endl;
 	return 0;
 }
