@@ -79,12 +79,13 @@ using namespace std;
 //}
 
 
-int main()
-{
-	string s = "abcfsfaggse";
-	int pos1 = s.find("ag");
-	int pos2 = s.rfind("ag");
+//int main()
+//{
+//	string s = "abcfsfaggse";
+//	int pos1 = s.find("ag");
+//	int pos2 = s.rfind("ag");
+//
+//	cout << pos1 << endl << pos2 << endl;
+//	return 0;
+//}
 
-	cout << pos1 << endl << pos2 << endl;
-	return 0;
-}

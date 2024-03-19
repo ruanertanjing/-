@@ -1134,31 +1134,238 @@ using namespace std;
 //}
 
 //你只能写，不能读
-class STU
-{
-public:
-	void test(int age, int tele)
-	{
-		fun(age, tele);
-	}
-private:
-	int m_age;//m_age
-	int m_tele;
-	void fun(int age, int tele)
-	{
-		m_age = age;
-		m_tele = tele;
-		/*
-		cout << m_age << endl;
-		cout << m_tele << endl;
-		*/
-	}
-};
+//class STU
+//{
+//public:
+//	void test(int age, int tele)
+//	{
+//		fun(age, tele);
+//	}
+//private:
+//	int m_age;//m_age
+//	int m_tele;
+//	void fun(int age, int tele)
+//	{
+//		m_age = age;
+//		m_tele = tele;
+//		/*
+//		cout << m_age << endl;
+//		cout << m_tele << endl;
+//		*/
+//	}
+//};
+//
+//int main()
+//{
+//	STU stu1;
+//	stu1.test(18, 10086);
+//	cout << stu1.m_age << endl;
+//	return 0;
+//}
 
-int main()
-{
-	STU stu1;
-	stu1.test(18, 10086);
-	cout << stu1.m_age << endl;
-	return 0;
-}
+
+							/*dp第二周周作业*/
+
+////P1880 [NOI1995] 石子合并
+////https://www.luogu.com.cn/problem/P1880
+//
+//////线性的解法，该题为环状！！！！！四周:若少了圆形四周
+//////线性题解：董晓算法：https://www.bilibili.com/video/BV1gz4y1y7Rv?spm_id_from=333.880.my_history.page.click
+////
+//////要用到前缀和
+//////前缀和：s[i] = s[i - 1] + a[i]
+//////区间和 = s[r] - s[l - 1]
+////
+////#include <climits>
+////const int N = 105;
+////int a[N];//存石子个数
+////int s[N];//存区间和
+////int fin[N][N];//存从l到r的最小得分,i,i上初始化为0，其他为INT_MAX
+////int fax[N][N];//存从l到r的最大得分, i,i上初始化为INT_MAX，其他初始化为0
+////
+////int main()
+////{
+////	quickio;
+////	int n;
+////	cin >> n;
+////	
+////	if (n == 1)
+////		cout << 0 << endl << 0 << endl;
+////	int i, len, k, l, j;//len:区间长度,k:分割点,l:区间左边界
+////
+////	for (i = 1/*好理解*/; i <= n; i++)
+////	{
+////		cin >> a[i];
+////		s[i] = s[i - 1] + a[i];//求前缀和
+////	}
+////
+////	for (i = 1; i <= n; i++)
+////	{
+////		for (j = 1; j <= n; j++)
+////		{
+////			if (i == j)
+////			{
+////				fin[i][j] = 0;
+////				fax[i][j] = INT_MAX;
+////			}
+////			else
+////			{
+////				fin[i][j] = INT_MAX;
+////				fax[i][j] = 0;
+////			}
+////		}
+////	}
+////
+////	for (len = 2; len <= n; len++)//区间长度
+////	{
+////		for (l = 1; l + len - 1 <= n/*右区间*/; l++)//区间
+////		{
+////			int r = l + len - 1;//区间右边界
+////			for (k = l; k < r/*<的原因：因为下面有k+1*/; k++)//分割点
+////			{
+////				fin[l][r] = min(fin[l][r], fin[l][k] + fin[k + 1][r] + s[r] - s[l - 1]);
+////				fax[l][r] = max(fax[l][r], fax[l][k] + fax[k + 1][r] + s[r] - s[l - 1]);
+////			}
+////		}
+////	}
+////
+////	cout << fin[1][n] << endl;
+////	cout << fax[1][n] << endl;
+////	return 0;
+////}
+//
+//
+////线性的解法，该题为环状！！！！！四周------>线性数组两个拼在一起
+////线性题解：董晓算法：https://www.bilibili.com/video/BV1gz4y1y7Rv?spm_id_from=333.880.my_history.page.click
+//
+////要用到前缀和
+////前缀和：s[i] = s[i - 1] + a[i]
+////区间和 = s[r] - s[l - 1]
+//
+//#include <climits>
+//const int N = 105 + 105;
+//int a[N];//存石子个数
+//int s[N];//存区间和
+//int fin[N][N];//存从l到r的最小得分,i,i上初始化为0，其他为INT_MAX
+//int fax[N][N];//存从l到r的最大得分, i,i上初始化为INT_MAX，其他初始化为0
+//
+//int main()
+//{
+//	quickio;
+//	int n;
+//	cin >> n;
+//
+//	if (n == 1)
+//		cout << 0 << endl << 0 << endl;
+//	int i, len, k, l, j;//len:区间长度,k:分割点,l:区间左边界
+//
+//	memset(fin, 0x3f3f3f, sizeof(fin));
+//	for (i = 1/*好理解*/; i <= n; i++)
+//	{
+//		cin >> a[i];
+//
+//		/*与线性的区别*/
+//		a[i + n] = a[i];
+//	}
+//
+//	for (i = 1; i <= 2*n; i++)
+//	{
+//		s[i] = s[i - 1] + a[i];//求前缀和
+//		fin[i][i] = 0;/**/
+//	}
+//
+//
+//	for (len = 2; len <= n; len++)//区间长度
+//	{
+//		for (l = 1; l + len - 1 < n * 2/*注意是 < *//*右区间*/; l++)//区间
+//		{
+//			int r = l + len - 1;//区间右边界
+//			for (k = l; k < r && k < 2 * n/*<的原因：因为下面有k+1*/; k++)//分割点
+//			{
+//				fin[l][r] = min(fin[l][r], fin[l][k] + fin[k + 1][r] + s[r] - s[l - 1]);
+//				fax[l][r] = max(fax[l][r], fax[l][k] + fax[k + 1][r] + s[r] - s[l - 1]);
+//			}
+//		}
+//	}
+//
+//	/*与线性的区别*/
+//	int resmax = -1;
+//	int resmin = INT_MAX;
+//	for (i = 1; i <= n; i++)
+//	{
+//		resmax = max(resmax, fax[i][i + n - 1]);
+//		resmin = min(resmin, fin[i][i + n - 1]);
+//	}
+//	cout << resmin << endl;
+//	cout << resmax << endl;
+//	return 0;
+//}
+
+//
+////P1880 [NOI1995] 石子合并
+////https://www.luogu.com.cn/problem/P1880
+//
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>/*max函数所在头文件*/
+//#include <cstring>
+//#include <climits>
+//
+//#define quickio ios::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+//
+//using namespace std;
+//
+////注意是环状的，而不是线性的
+//const int N = 105 + 105;/**/
+//int fin[N][N];//从i到j的最小区间和
+//int fax[N][N];//从i到j的最大区间和
+//int a[2 * N];
+//int s[2 * N];//前缀和
+//
+//int main()
+//{
+//    quickio;
+//    int n;
+//    cin >> n;
+//
+//    int i;
+//    memset(fin, 0x3f3f3f, sizeof(fin));
+//    for (i = 1; i <= n; i++)
+//    {
+//        cin >> a[i];
+//        a[i + n] = a[i];
+//    }
+//
+//    for (i = 1; i <= 2 * n; i++)
+//    {
+//        s[i] = s[i - 1] + a[i];//前缀和
+//        fin[i][i] = 0;/*是在2 * n的区间李，而不是n*/
+//    }
+//
+//    int len, l, r, k;//区间长度，左边界，右边界，分割点
+//    for (len = 2/**/; len <= n; len++)
+//    {
+//        for (l = 1; l + len - 1 <= 2 * n; l++)
+//        {
+//            r = l + len - 1;
+//            for (k = l/*l*/; k </*<*/ r; k++)
+//            {
+//                fin[l][r] = min(fin[l][r], fin[l][k] + fin[k + 1][r] + s[r] - s[l - 1]);
+//                fax[l][r] = max(fax[l][r], fax[l][k] + fax[k + 1][r] + s[r] - s[l - 1]);
+//            }
+//        }
+//    }
+//
+//    int resmax = -1, resmin = INT_MAX;
+//    for (i = 1; i </*<*/ n; i++)
+//    {
+//        resmax = max(resmax, fax[i][i + n - 1/**/]);
+//        resmin = min(resmin, fin[i][i + n - 1/**/]);
+//    }
+//
+//    cout << resmin << endl;
+//    cout << resmax << endl;
+//    return 0;
+//}
+
+
