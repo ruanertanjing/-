@@ -1348,7 +1348,7 @@ using namespace std;
 //        for (l = 1; l + len - 1 <= 2 * n; l++)
 //        {
 //            r = l + len - 1;
-//            for (k = l/*l*/; k </*<*/ r; k++)
+//            for (k = l/*l， 因为可以l和（l+ 1, r)的最大或者最小得分合并*/; k </*<：因为k = r时是重复计算*/ r; k++)
 //            {
 //                fin[l][r] = min(fin[l][r], fin[l][k] + fin[k + 1][r] + s[r] - s[l - 1]);
 //                fax[l][r] = max(fax[l][r], fax[l][k] + fax[k + 1][r] + s[r] - s[l - 1]);
@@ -1369,3 +1369,360 @@ using namespace std;
 //}
 
 
+////P1063 [NOIP2006 提高组] 能量项链
+////https://www.luogu.com.cn/problem/P1063
+//
+////环状
+////类似于上一题
+////两颗珠子才能聚合成一颗珠子!!!!!!!!!!11
+//
+//#include <climits>
+//const int N = 105 + 105;
+//int head[N];//头标记
+//int e[N];//尾标记
+//int dp[N][2 * N];//从i到j构成的最大能量
+//
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//	int i;
+//	//初始化
+//	for (i = 1/**/; i <= n; i++)
+//	{
+//		cin >> head[i];
+//		head[i + n] = head[i];
+//
+//		if (i > 1)
+//		{
+//			e[i - 1] = head[i];
+//			e[i - 1 + n] = head[i];
+//		}
+//	}
+//	e[n] = head[1];
+//	e[2 * n] = head[1];
+//
+//	////打印head,e
+//	//for (i = 1/**/; i <= 2 * n; i++)
+//	//{
+//	//	cout << head[i] << " " << e[i] << endl;
+//	//}
+//
+//	int l, r,len, k;//j, k
+//	for (len = 2; len <= n + 1/*必须闭合*/; len++)
+//	{
+//		for (l = 1; l + len - 1 <=/*要到*/ 2 * n; l++)
+//		{
+//			r = l + len - 1;
+//
+//			for (k = l + 1/*+1：因为必须是两堆结合*/; k < r; k++)
+//			{
+//				dp[l][r] = max(dp[l][r],dp[l][k] + dp[k][r] + head[l] * head[k] * head[r]);
+//			}
+//		}
+//	}
+//
+//	//for (l = 1; l < n; l++)
+//	//{
+//
+//	//	for (r = l + 1; r < 2 * n; r++)
+//	//	{
+//	//		dp[l][r] = max(dp[l][r], head[l] * e[l] * e[r]);
+//
+//	//		if (dp[l][r] > Emax)
+//	//			Emax = dp[l][r];
+//	//	}
+//	//}
+//
+//	int Emax = INT_MIN;
+//	for (i = 1; i <= n; i++)
+//	{
+//		if (dp[i][i + n] > Emax)
+//			Emax = dp[i][i + n/**/];
+//	}
+//
+//	cout << Emax << endl;
+//	return 0;
+//}
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>/*max函数所在头文件*/
+#include <cstring>
+#include <climits>
+
+#define quickio ios::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+
+using namespace std;
+
+////P1063 [NOIP2006 提高组] 能量项链
+////https://www.luogu.com.cn/problem/P1063
+//
+////环状!!!!!
+////类似于上一题
+////两颗珠子才能聚合成一颗珠子!!!!!!!!!!11
+//
+//#include <climits>
+//const int N = 105 + 105;
+//int head[2 * N];//头
+//int e[2 * N];//尾
+//int dp[N][2 * N];//从i到j的最大能量和
+//
+//int main()
+//{
+//    int n;
+//    cin >> n;
+//    int i;
+//
+//    for (i = 1; i <= n; i++)
+//    {
+//        cin >> head[i];
+//        head[i + n] = head[i];/*环*/
+//
+//        if (i > 1)
+//        {
+//            e[i - 1] = head[i];
+//            e[i - 1 + n] = head[i];
+//        }
+//    }
+//
+//    e[n] = head[1];/**/
+//    e[2 * n] = head[1];/**/
+//
+//    int len, l, r, k;//模板
+//    for (len = 2; len <= n + 1/*要闭合*/; len++)
+//    {
+//        for (l = 1; l + len - 1 <= 2 * n; l++)
+//        {
+//            r = l + len - 1;
+//            for (k = l + 1/*+1:必须要两堆结合*/; k < r; k++)
+//            {
+//                dp[l][r] = max(dp[l][r], dp[l][k] + dp[k][r] + head[l] * head[k] * head[r]);
+//            }
+//        }
+//    }
+//
+//    int Emax = INT_MIN;
+//    for (i = 1; i <= n; i++)
+//    {
+//        if (dp[i][i + n] > Emax)
+//            Emax = dp[i][i + n];
+//    }
+//
+//    cout << Emax << endl;
+//    return 0;
+//}
+
+
+////P1352 没有上司的舞会
+////https://www.luogu.com.cn/problem/P1352
+//// 
+//// 讲解：https://www.bilibili.com/video/BV1eK411N7Ly/?spm_id_from=333.337.search-card.all.click
+////树形 DP 子结构是一颗子树。
+////树形 DP 一般思路：
+////从分析子树入手，最优解通常是与子树根节点 u 有关的函数，状态计算就是寻找根点与子节点以及边权的递推关系。编写代码，通常要 dfs ，从根到叶，再从叶到根，在合适的时候 DP 。
+//
+////超空间限制了，有一组过不去，用vector改一下
+////#include <vector>
+//const int N = 6e3 + 5;
+//int r[N];
+////vector<vector<int> >vec;
+//int board[N][N];//存上司i的下属j
+//int b[N];//存上司i的下属个数
+//int fa[N];//记录是否有父节点
+//int dp[N][2];//存i点的最大快乐指数
+////j = 1:来舞会，0：不来
+//
+//void dfs(int u)/**/
+//{
+//	dp[u][1] = r[u];
+//
+//	int i;
+//	for (i = 0; i < b[u]; i++)
+//	{
+//		int son = board[u][i];
+//		dfs(son);
+//
+//		/*重要公式*/
+//		dp[u][1] += dp[son][0];//儿子只能不选
+//		dp[u][0] += max(dp[son][1], dp[son][0]);
+//	}
+//}
+////行数 = n + 1 - 2 + 1/*注意+1*/
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//
+//	int i;
+//	for (i = 1; i <= n; i++)
+//	{
+//		cin >> r[i];
+//	}
+//
+//	int k, l;
+//	for (i = 0; i < 2 * n - (n + 2) + 1; i++)
+//	{
+//		cin >> l >> k;
+//		//vec[k].push_back(l);//l的上司为k
+//		board[k][b[k]++] = l;
+//		fa[l]++;
+//	}
+//
+//	int root = 1;//找根节点
+//	while (fa[root])
+//		root++;
+//	dfs(root);
+//	cout << max(dp[root][0], dp[root][1]) << endl;
+//	return 0;
+//}
+
+//#include <vector>
+//const int N = 6e3 + 5;
+//int r[N];
+//vector<int>vec[N]/*注意定义方式*/;//存上司i的下属j
+//int b[N];//存上司i的下属个数
+//int fa[N];//记录是否有父节点
+//int dp[N][2];//存i点的最大快乐指数
+////j = 1:来舞会，0：不来
+//
+//void dfs(int u)/**/
+//{
+//	dp[u][1] = r[u];
+//
+//	int i;
+//	for (i = 0; i < b[u]; i++)
+//	{
+//		int son = vec[u][i];
+//		dfs(son);
+//
+//		/*重要公式*/
+//		dp[u][1] += dp[son][0];//儿子只能不选
+//		dp[u][0] += max(dp[son][1], dp[son][0]);
+//	}
+//}
+////行数 = n + 1 - 2 + 1/*注意+1*/
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//
+//	int i;
+//	for (i = 1; i <= n; i++)
+//	{
+//		cin >> r[i];
+//	}
+//
+//	int k, l;
+//	for (i = 0; i < 2 * n - (n + 2) + 1; i++)
+//	{
+//		cin >> l >> k;
+//		vec[k].push_back(l);//l的上司为k
+//		b[k]++;
+//		fa[l]++;
+//	}
+//
+//	int root = 1;//找根节点
+//	while (fa[root])
+//		root++;
+//	dfs(root);
+//	cout << max(dp[root][0], dp[root][1]) << endl;
+//	return 0;
+//}
+
+//#include <iostream>
+//#include <vector>
+//#include <algorithm>/*max函数所在头文件*/
+//#include <cstring>
+//#include <climits>
+//
+//#define quickio ios::sync_with_stdio(false),cin.tie(0),cout.tie(0);
+//
+//using namespace std;
+//
+////P1352 没有上司的舞会
+////https://www.luogu.com.cn/problem/P1352
+//// 
+//// 讲解：https://www.bilibili.com/video/BV1eK411N7Ly/?spm_id_from=333.337.search-card.all.click
+////树形 DP 子结构是一颗子树。
+////树形 DP 一般思路：
+////从分析子树入手，最优解通常是与子树根节点 u 有关的函数，状态计算就是寻找根点与子节点以及边权的递推关系。编写代码，通常要 dfs ，从根到叶，再从叶到根，在合适的时候 DP 。
+//#include <vector>
+//const int N = 6e3 + 5;
+//int r[N];
+//vector<int>vec[N];
+//int fa[N];
+//int dp[N][2];
+//
+//void dfs(int u)
+//{
+//    dp[u][1] = r[u];
+//
+//    int i;
+//    for (i = 0; i < vec[u].size(); i++)
+//    {
+//        int son = vec[u][i];
+//        dfs(son);
+//        dp[u][0] += max(dp[son][1], dp[son][0]);
+//        dp[u][1] += dp[son][0];
+//    }
+//}
+//
+//int main()
+//{
+//    int n;
+//    cin >> n;
+//    int i;
+//
+//    for (i = 1; i <= n + 1 - 2 + 1; i++)
+//        cin >> r[i];
+//
+//    int l, k;
+//    for (i = 0; i < 2 * n - (n + 2) + 1; i++)
+//    {
+//        cin >> l >> k;
+//        vec[k].push_back(l);
+//        fa[l] = 1;
+//    }
+//
+//    int root = 1;
+//    while (fa[root])
+//        root++;
+//
+//    dfs(root);
+//    cout << max(dp[root][0], dp[root][1]);
+//    return 0;
+//}
+
+//P1040 [NOIP2003 提高组] 加分二叉树
+//https://www.luogu.com.cn/problem/P1040
+
+//也是区间dp
+//每个点都是根节点
+
+const int N = 30 + 5;
+int w[N];//每个点的值
+int dp[N][N];
+int root[N][N];//根节点
+
+void dfs()
+{
+
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	int i;
+	for (i = 0; i < n; i++)
+	{
+		cin >> w[i];
+		root[i][i] = w[i];
+	}
+
+
+
+	return 0;
+}
