@@ -89,3 +89,31 @@ using namespace std;
 //	return 0;
 //}
 
+
+//this指针的使用
+class People
+{
+public:
+	People(int age)
+	{
+		this->age = age;
+	}
+	People& addage(People p)
+	{
+		age += p.age;
+		return *this;
+	}
+
+	int age;
+};
+
+int main()
+{
+	People p1(10);
+
+	People p2(10);
+
+	p2.addage(p1).addage(p1).addage(p1).addage(p1);
+	cout << p2.age << endl;
+	return 0;
+}

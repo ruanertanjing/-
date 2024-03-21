@@ -1695,33 +1695,104 @@ using namespace std;
 //    return 0;
 //}
 
-//P1040 [NOIP2003 提高组] 加分二叉树
-//https://www.luogu.com.cn/problem/P1040
+////P1040 [NOIP2003 提高组] 加分二叉树
+////https://www.luogu.com.cn/problem/P1040
+//
+////每个点都是根节点------>也是区间dp
+//
+//#define ll long long 
+//const int N = 30 + 5;
+//int w[N];//每个点的值
+//ll /**/dp[N][N];//每点的最大分数/*注意2 * 10^9就超int了*/
+//int root[N][N];//根节点
+//
+//void dfs(int l, int r)
+//{
+//	if (l > r)
+//		return;
+//
+//	cout << root[l][r] << " ";
+//	dfs(l, root[l][r] - 1);
+//	dfs(root[l][r] + 1, r);
+//}
+//
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//	int i;
+//	for (i = 1; i <= n; i++)
+//	{
+//		cin >> w[i];
+//		root[i][i] = i;//根节点, 先假设每个节点的根节点是本身
+//		dp[i][i] = w[i];//该点加分最高二叉树
+//	}
+//
+//	int l, r, k, len;
+//	for (len = 1/**/; len <= n; len++)
+//	{
+//		for (l = 1; l + len - 1 <= n; l++)
+//		{
+//			r = l + len - 1;
+//			root[l][r] = l;/**/
+//			for (k = l; k <= r; k++)
+//			{
+//				ll sum;
+//
+//				if (k == l)
+//				{
+//					sum = dp[k][k] + 1 * dp[k + 1][r];
+//					if (sum > dp[l][r])
+//					{
+//						dp[l][r] = sum;
+//						root[l][r] = k;/*更新根节点*/
+//					}
+//					//dp[l][r] = max(dp[l][r], dp[k][k] + 1 * dp[k + 1][r]);
+//				}
+//				else if (k == r)
+//				{
+//					sum = dp[k][k] + dp[l][k - 1] * 1;
+//					if (sum > dp[l][r])
+//					{
+//						dp[l][r] = sum;
+//						root[l][r] = k;
+//					}
+//
+//					//dp[l][r] = max(dp[l][r], dp[k][k] + dp[l][k - 1] * 1);
+//				}
+//				else
+//				{
+//					sum = dp[k][k] + dp[l][k - 1] * dp[k + 1][r];
+//					if (sum > dp[l][r])
+//					{
+//						dp[l][r] = sum;
+//						root[l][r] = k;
+//					}
+//
+//					//dp[l][r] = max(dp[l][r], dp[k][k] + dp[l][k - 1] * dp[k + 1][r]);
+//				}
+//			}
+//		}
+//	}
+//
+//	cout << dp[1][n] << endl;
+//	dfs(1, n);
+//	return 0;
+//}
 
-//也是区间dp
-//每个点都是根节点
 
-const int N = 30 + 5;
-int w[N];//每个点的值
-int dp[N][N];
-int root[N][N];//根节点
+//P2015 二叉苹果树
+//https://www.luogu.com.cn/problem/P2015
 
-void dfs()
-{
+//倒着就是二叉树
+//感觉和加分二叉树一样
 
-}
+int dp[]
 
 int main()
 {
-	int n;
-	cin >> n;
-	int i;
-	for (i = 0; i < n; i++)
-	{
-		cin >> w[i];
-		root[i][i] = w[i];
-	}
-
+	int n, q;
+	cin >> n >> q;
 
 
 	return 0;
