@@ -1785,15 +1785,65 @@ using namespace std;
 //https://www.luogu.com.cn/problem/P2015
 
 //倒着就是二叉树
-//感觉和加分二叉树一样
+//像最长路径，要存图----->链式前向星
+//因为是无向------>存两条边，两个方向都通
 
-int dp[]
+const int N = 100 + 5;
+
+int head[N];//存每个点的数据
+int cnt;
+int dp[N][N];//存以i为根节点，下面有j条边时所含的最大苹果数
+int n, q;
+
+struct EDGE
+{
+	int to;//终点
+	int next;
+	int wei;//权值
+}EDGE[N * 2];//存每个边的数据((N -1) * 2 也可)
+
+void add(int u, int v, int w)
+{
+	cnt++;
+	EDGE[cnt].to = v;
+	EDGE[cnt].wei = w;
+	EDGE[cnt].next = head[u];
+	head[u] = cnt;
+}
+
+void dfs(int u, int fa)//儿子，父亲
+{
+	for (int i = head[u]; i != 0; i = EDGE[i].next)
+	{
+		int v = EDGE[i].to;//儿子
+		int w = EDGE[i].wei;//权值
+
+		if (v == fa)
+			continue;
+		dfs(v, u);
+
+		for (int j = q; j >= 0; j--)//相当于背包，j代表的是容积，j代表的是还剩的可以留下的支数
+		{
+			for (int k = 0; k < j; k++)
+			{
+				dp[u][j] = max(dp[u][j], dp[v][k] + dp[])
+			}
+		}
+	}
+}
 
 int main()
 {
-	int n, q;
+	quickio;
 	cin >> n >> q;
 
-
+	int u, v, w, i;
+	for (i = 1; i <= n; i++)
+	{
+		cin >> u >> v >> w;
+		add(u, v, w);
+		add(v, u, w);//建双向边
+	}
+	dfs(1, 0);
 	return 0;
 }
